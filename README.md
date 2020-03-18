@@ -2,9 +2,9 @@
 python project in UCLouvain LINFO1002A course<br/>
 group E6 <br/>
 Members : <br/>
-  <span class="marge">Allegaert Hadrien <br/></span>
-  <span class="marge">Dourov Maxime <br/></span>
-  <span class="marge">Lechat Jerome<br/></span>
+  <span class="marge">Allegaert Hadrien</span><br/>
+  <span class="marge">Dourov Maxime</span><br/>
+  <span class="marge">Lechat Jerome</span><br/>
   
 <p> 
 this project consist in an interactive website which give you easier comprehension of the differents submissions's stats on the Inginious platform
