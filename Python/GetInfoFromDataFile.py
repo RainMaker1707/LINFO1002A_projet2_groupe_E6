@@ -29,6 +29,16 @@ def format_data(heavy_str_data):
     return ret_lst
 
 
+def reverse(matrix):
+    ret = [[] for _ in range(len(matrix[0]))]
+    for i in range(len(matrix[0])):
+        temp = []
+        for j in range(len(matrix)):
+            temp.append(matrix[j][i])
+        ret[i] = temp
+    return ret
+
+
 def get_europa(clean_data, date):
     """
     :param clean_data: data from format_data()
