@@ -74,6 +74,3 @@ def home():
     content = content.replace("Y_LIST", str(europa[1]))
     content = content.replace("Y_TITLE", "Total Cases in West Europa")
     return content
-
-
-print(get_europa(format_data(get_data("total_cases.csv")), "2020-03-14"))
