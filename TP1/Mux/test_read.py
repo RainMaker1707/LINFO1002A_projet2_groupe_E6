@@ -34,17 +34,44 @@ def format_data(heavy_str_data):
         temp_str = ""
         for j in range(len(heavy_str_data[i])):
             if heavy_str_data[i][j] == ',':
-                ret_lst[i].append(temp_str)
-                temp_str = ""
+            	if temp_str == "":
+            		ret_lst[i].append(0)
+            	else:
+            		try:
+            			ret_lst[i].append(int(temp_str))
+	            		temp_str = ""
+	            	except:
+	            		ret_lst[i].append(temp_str)
+	            		temp_str = ""
             else:
                 temp_str += heavy_str_data[i][j]
     return ret_lst
 
+def reverse(matrix):
+	ret = [[] for _ in range(len(matrix[0]))]
+	for i in range(len(matrix[0])):
+		temp = []
+		for j in range(len(matrix)):
+			temp.append(matrix[j][i])
+			ret[i] = temp
+	return ret
+
 script = get_script("maxime.html")
-data = format_data(get_data("total_cases.csv"))
+data = reverse(format_data(get_data("total_cases.csv")))
 
-"{label:'Stock A', fill: false, borderColor: 'red', data: [65, 59, 80, 81, 56, 55, 40, ,60,55,30,78], spanGaps: true,}"
+#"{label: {0}, fill: false, borderColor: 'red', data: {1}, spanGaps: true}"
 
+dates = data[0][1:]
 
-script = script.replace("#data#",)
-script = script.replace("#label#",)
+datasets = ""
+
+for j,i in enumerate(data[1:]):
+	datasets += "{"+'label: "{0}",\n fill: false,\n borderColor: "red",\n data: {1},\n spanGaps: true,\n'.format(i[0],i[1:])+"}"
+	if j < len(data)-1:
+		datasets += ", "
+
+script = script.replace("#data#",datasets)
+script = script.replace("#labels#",str(dates))
+
+with open("out.html", 'w') as file:
+	file.write(script)
