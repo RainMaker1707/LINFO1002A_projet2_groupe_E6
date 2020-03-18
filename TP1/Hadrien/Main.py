@@ -1,3 +1,15 @@
+from flask import Flask
+app = Flask(__name__)
+
+
+def read_file(path):
+    content_str = str()
+    with open(path, 'r') as file:
+        for line in file:
+            content_str += line
+    return content_str
+
+
 def get_data(path_file):
     """
     :param path_file: string path to file .csv which content all datas
@@ -47,3 +59,21 @@ def get_europa(clean_data, date):
             europa[0].append(clean_data[0][i])
             europa[1].append(case_list[i])
     return europa
+
+
+@app.route('/')
+def home():
+    """
+    :return:
+    """
+    content = read_file("hadrien.html")
+    data = format_data(get_data("total_cases.csv"))
+    content = content.replace("TYPE", "bar")
+    europa = get_europa(data, "2020-03-14")
+    content = content.replace("X_LIST", str(europa[0]))
+    content = content.replace("Y_LIST", str(europa[1]))
+    content = content.replace("Y_TITLE", "Total Cases in West Europa")
+    return content
+
+
+print(get_europa(format_data(get_data("total_cases.csv")), "2020-03-14"))
