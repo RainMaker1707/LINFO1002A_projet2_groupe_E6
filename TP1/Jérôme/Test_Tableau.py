@@ -66,11 +66,5 @@ def home():
     """
     :return:
     """
-    content = read_file("hadrien.html")
-    data = format_data(get_data("total_cases.csv"))
-    content = content.replace("TYPE", "bar")
-    europa = get_europa(data, "2020-03-16")
-    content = content.replace("X_LIST", str(europa[0]))
-    content = content.replace("Y_LIST", str(europa[1]))
-    content = content.replace("Y_TITLE", "Total Cases in West Europa")
+    content = read_file("jerome.html")
     return content
