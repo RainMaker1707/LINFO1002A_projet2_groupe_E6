@@ -16,4 +16,70 @@
     </div>
 </header>
 
+<body>
+<div class="FirstLineGraph">
+    <div class="mainGraphCont">
+        <canvas id="main_graph">
+        <script>
+        var ctx = document.getElementById('main_graph').getContext('2d');
+        var myChart = new Chart(ctx, {
+
+        // le type du graph
+	    type: 'bar',
+
+	    // datas
+	    data: {
+        labels: ['a', 'b', 'c', 'd', 'e'],
+        datasets: [{
+                    label: 'time',
+                    data: [1, 3, 5, 2, 7]
+                }]
+	        },
+	    options: {
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero:true
+	                    }
+	                }]
+	            }
+	        }
+	    });
+        </script>
+        </canvas>
+    </div>
+
+    <div class="mainGraphCont">
+        <canvas id="main_graph2">
+        <script>
+        var ctx = document.getElementById('main_graph2').getContext('2d');
+        var myChart = new Chart(ctx, {
+
+        // le type du graph
+	    type: 'line',
+
+	    // datas
+	    data: {
+        labels: ['a', 'b', 'c', 'd', 'e'],
+        datasets: [{
+                    label: 'time',
+                    data: [1, 3, 5, 2, 7]
+                }]
+	        },
+	    options: {
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero:true
+	                    }
+	                }]
+	            }
+	        }
+	    });
+        </script>
+        </canvas>
+    </div>
+</div>
+</body>
+
 </html>

@@ -24,7 +24,7 @@ header{
     align-items: center;
     padding-left: 15px;
     border-style: none;
-    height: 55px;
+    height: 45px;
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
@@ -33,6 +33,18 @@ header{
     font-size: .8203125rem;
     font-weight: 300;
     background-color: #333;
+}
+
+.FirstLineGraph{
+    display: flex;
+    align-items: center;
+    align: center;
+}
+
+.mainGraphCont{
+    height: auto;
+    width: 700px;
+    padding: 70px;
 }
 
 *, *::before, *::after {
