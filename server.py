@@ -7,4 +7,5 @@ def home():
     """
     :return:
     """
+
     return render_template("base.html", STYLE=url_for('static', filename="base.css"))
