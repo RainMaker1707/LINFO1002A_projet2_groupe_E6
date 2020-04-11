@@ -1,17 +1,17 @@
 from flask import Flask
-from PageCreator import *
+from TP1.OldTry.PageCreator import *
 
 app = Flask(__name__)
 
 
 @app.route('/')
-@app.route('/home.html')
+@app.route('/base.html')
 def home():
     """
     Home page from the site
     :return:
     """
-    content_str = read_file("Html/home.html")
+    content_str = read_file("Html/base.html")
     content_str = make_menu(content_str)
     content_str = make_title(content_str)
     return content_str.replace('X', "<body><u>CHECK HOMEPAGE</u></body>")

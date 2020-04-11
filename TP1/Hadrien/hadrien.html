@@ -18,14 +18,15 @@
         var myChart = new Chart(ctx, {
 
         // le type du graph
-	    type: 'TYPE',
+	    type: {{TYPE | safe}},
 
 	    // datas
 	    data: {
-        labels: X_LIST,
+        labels: {{X_LIST | safe}},
         datasets: [{
-                    label: 'Y_TITLE',
-                    data: Y_LIST
+
+                    label: {{Y_TITLE | safe}},
+                    data: {{Y_LIST}}
                    }]
 	       }
          }

@@ -17,7 +17,7 @@ def make_menu(html_content):
     """
     menu = ""
     menu += "<ul id=\"menu\">"  # menu start
-    menu += "<li><a href=\"home.html\">Home</a></li>"
+    menu += "<li><a href=\"base.html\">Home</a></li>"
     menu += "<li><a href=\"graph.html\">Graph</a></li>"
     menu += "<li><a href=\"coursesList.html\">Courses</a></li>"
     menu += "</ul>"  # menu end

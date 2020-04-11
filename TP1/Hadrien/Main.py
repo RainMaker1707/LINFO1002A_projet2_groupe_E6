@@ -1,5 +1,5 @@
-from flask import Flask
-app = Flask(__name__)
+from flask import Flask, render_template
+app = Flask(__name__, template_folder='.')
 
 
 def read_file(path):
@@ -58,6 +58,9 @@ def get_europa(clean_data, date):
         if clean_data[0][i] in lands:
             europa[0].append(clean_data[0][i])
             europa[1].append(case_list[i])
+    europa[0] = list(map(lambda x: str(x), europa[0]))
+    europa[1] = list(map(lambda x: int(x), europa[1]))
+    print(europa[0])
     return europa
 
 
@@ -66,11 +69,9 @@ def home():
     """
     :return:
     """
-    content = read_file("hadrien.html")
     data = format_data(get_data("total_cases.csv"))
-    content = content.replace("TYPE", "bar")
     europa = get_europa(data, "2020-03-16")
-    content = content.replace("X_LIST", str(europa[0]))
-    content = content.replace("Y_LIST", str(europa[1]))
-    content = content.replace("Y_TITLE", "Total Cases in West Europa")
-    return content
+    print(europa[0])
+    print(europa[1])
+
+    return render_template("hadrien.html", Y_TITLE = "\'Total cases\'", TYPE = "\'bar\'", X_LIST = europa[0], Y_LIST = europa[1])
