@@ -1,0 +1,49 @@
+<html>
+<html>
+  <canvas id="myChart"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script>
+  
+    var canvas = document.getElementById("myChart");
+    var ctx = canvas.getContext('2d');
+
+    // Global Options:
+    Chart.defaults.global.defaultFontColor = 'black';
+    Chart.defaults.global.defaultFontSize = 16;
+
+    var data = {
+      labels: ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],
+      datasets: [{label: "intersection",
+ fill: true,
+ borderColor: "rgba(200, 0, 0, 0.7)",
+ backgroundColor: "rgba(200, 0, 0, 0.7)",
+ data: [3, 10, 3, 0, 4, 18, 48, 32, 12, 70, 98, 126, 253, 48, 0, 0, 56, 0, 6, 0, 0, 0, 4, 32, 107, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 8, 14, 15],
+ spanGaps: true,
+}
+      ]
+    };
+
+    // Notice the scaleLabel at the same level as Ticks
+    var options = {
+      scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    },
+                    scaleLabel: {
+                         display: true,
+                         labelString: 'soumissions',
+                         fontSize: 20 
+                      }
+                }]            
+            }  
+    };
+
+    // Chart declaration:
+    var myBarChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options
+    });
+  </script>
+</html>
