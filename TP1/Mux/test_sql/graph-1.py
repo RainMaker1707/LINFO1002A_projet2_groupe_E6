@@ -133,7 +133,7 @@ def graph_1(task):
 	labels += ']'
 
 	#create and save the sript
-	script = read_file("template.html")
+	script = read_file("template1.html")
 	script = script.replace("#data#",dataset)
 	script = script.replace("#labels#",labels)
 
