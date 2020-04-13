@@ -27,6 +27,6 @@ def courses_list_templating(filename: str):
     lst = course_list(filename)
     final_str = "<ul>\n<li>Liste des cours\n<ul>"
     for elem in lst:
-        final_str += "<li><a href=\"#\">{0}</a></li>\n".format(elem)
+        final_str += "<li><a href=\"/course/{0}\">{0}</a></li>\n".format(elem)
     final_str += "</ul>\n</li>\n</ul>\n"
     return final_str

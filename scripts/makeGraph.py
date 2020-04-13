@@ -16,9 +16,13 @@ def request(filename: str, req: str):
     return lst
 
 
-def modulated_request(req: str, where_arg: str):
-
-    return
+def format_request_where(req: str, where_arg: str):
+    """
+    :param req: SQL request to format
+    :param where_arg: arg to set at WHERE="where_arg"
+    :return: str: a clean SQL request with set WHERE
+    """
+    return req.replace("WHERE ", "WHERE {0}".format(where_arg))
 
 
 def get_random_color(number: int):
@@ -72,11 +76,44 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: l
     return canvas
 
 
+def double_bar_graph(filename: str, req_fail: str, req_success: str):
+    """
+    :param filename: data base file path
+    :param req_fail: SQL req to select the fail submissions
+    :param req_success: SQL req to select the success submissions
+    :return: str : a double bar graph ofr each course with all submissions / success for each course
+    """
+    sub_lst = request(filename, req_fail)
+    success_lst = request(filename, req_success)
+    x_axe, y_axe, y_axe_2 = list(), list(), list()
+    for i in range(len(success_lst)):
+        x_axe.append(sub_lst[i][0])
+        y_axe.append(sub_lst[i][1])
+        y_axe_2.append(success_lst[i][1])
+    chart = "<canvas id='double_bar'><script>\n"
+    chart += "var ctx = document.getElementById('double_bar').getContext('2d');\n"
+    chart += "var data = {\n\t"
+    chart += "labels: {0},\n\t".format(x_axe)
+    chart += "datasets: [{\n\t\t"
+    chart += "label: 'attempt',\n\t\t"
+    chart += "backgroundColor: 'red',\n\t\t"
+    chart += "data: {0},\n\t\t".format(y_axe)
+    chart += "},{\n\t\t"
+    chart += "label: 'success',\n\t\t"
+    chart += "backgroundColor: 'lime',\n\t\t"
+    chart += "data: {0},\n\t\t".format(y_axe_2)
+    chart += "}]};\n"
+
+    chart += "var myBarChart = new Chart(ctx, {\n\ttype: 'bar',\n\tdata: data,\n\toptions: {\n\t\t"
+    chart += "barValueSpacing: 20,\n\t\tscales:{\n\t\t\tyAxes: [{\n\t\t\t\tticks: { min: 0}\n\t\t\t}]\n\t\t}\n\t}\n});"
+    chart += "\n</script></canvas>\n"
+    return chart
+
+
 def graph_total_sub(filename: str):
     """
-    Return a pie graph with the total submissions per courses in de data base
     :param filename: data base file path
-    :return:
+    :return: str: a pie graph with the total submissions per courses in de data base
     """
     lst = request(filename, "SELECT course,COUNT(submission)FROM user_tasks GROUP BY course")
     x_axe, y_axe = list(), list()
@@ -89,4 +126,3 @@ def graph_total_sub(filename: str):
             x_axe.append(lst[i][0])
         y_axe.append(lst[i][1])
     return make_graph('pie', 'total_sub', x_axe, "Total submissions", y_axe, True)
-
