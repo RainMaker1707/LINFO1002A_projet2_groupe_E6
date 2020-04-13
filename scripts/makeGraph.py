@@ -2,7 +2,7 @@ from random import randint, random
 import sqlite3
 
 
-def request(filename:str, req:str):
+def request(filename: str, req: str):
     """
     :param filename: filename of the data base
     :param req: SQL request to send to bdd
