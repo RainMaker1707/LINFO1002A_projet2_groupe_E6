@@ -67,6 +67,8 @@ header{
 }
 
 .FirstLineGraph{
+    margin-top: 50px;
+    margin-left: 25px;
     display: flex;
     align-items: center;
     align: center;
@@ -74,10 +76,16 @@ header{
 
 .mainGraphCont{
     height: auto;
-    width: 500px;
-    margin: 70px;
+    width: 50%;
+    minimum-width: 20%;
+    margin: 20px;
     display: flex;
     align-items: center;
+}
+
+#main_graph2{
+    padding: 1px;
+    margin-left: -100px;
 }
 
 *, *::before, *::after {
