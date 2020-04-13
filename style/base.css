@@ -81,9 +81,6 @@ header{
     margin: 20px;
     display: flex;
     align-items: center;
-}
-
-#main_graph2{
     padding: 1px;
     margin-left: -100px;
 }

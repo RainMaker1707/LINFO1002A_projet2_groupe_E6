@@ -2,6 +2,10 @@ import sqlite3
 
 
 def course_list(filename):
+    """
+    :param filename: db file path
+    :return: a list of clean string of all courses in db
+    """
     connection = sqlite3.connect(filename).cursor()
     lst = list()
     for row in connection.execute("SELECT DISTINCT(course) FROM submissions"):
@@ -16,6 +20,10 @@ def course_list(filename):
 
 
 def courses_list_templating(filename):
+    """
+    :param filename: db file path
+    :return: the part of html which define the side bar menu courses list
+    """
     lst = course_list(filename)
     final_str = "<ul>\n<li>Liste des cours\n<ul>"
     for elem in lst:
