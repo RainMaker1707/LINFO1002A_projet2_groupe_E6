@@ -9,9 +9,12 @@ def home():
     """
     :return:
     """
-    db = "scripts/Database/inginious.sqlite"
+    db = "scripts/DataBase/inginious.sqlite"
     return render_template("base.html",
                            STYLE=url_for('static', filename="base.css"),
-                           GRAPH1=make_graph("bar", "main_graph", ['a', 'b', 'c', 'd'], "time", [10, 12, 15, 12], True),
-                           GRAPH2=make_graph("doughnut", "main_graph2", ['a', 'b', 'c'], "time", [10, 12, 30], True),
+                           GRAPH1=make_graph("bar", "main_graph", ['a', 'b', 'c', 'd'], "time", [10, 12, 15, 12], True,
+                                             "scales: {yAxes: [{ticks: {beginAtZero:true}}]}"),
+                           GRAPH2=graph_total_sub(db),
+                           GRAPH3=make_graph('line', 'graph3', [i for i in range(10)],
+                                             "TITLE",[randint(0, 100) for _ in range(10)], True),
                            MENU=courses_list_templating(db))

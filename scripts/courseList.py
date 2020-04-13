@@ -1,7 +1,7 @@
 import sqlite3
 
 
-def course_list(filename):
+def course_list(filename: str):
     """
     :param filename: db file path
     :return: a list of clean string of all courses in db
@@ -19,7 +19,7 @@ def course_list(filename):
     return lst
 
 
-def courses_list_templating(filename):
+def courses_list_templating(filename: str):
     """
     :param filename: db file path
     :return: the part of html which define the side bar menu courses list

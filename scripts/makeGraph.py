@@ -1,4 +1,4 @@
-from random import randint, random
+from random import randint
 import sqlite3
 
 
@@ -11,9 +11,14 @@ def request(filename: str, req: str):
     connection = sqlite3.connect(filename).cursor()
     lst = list()
     for row in connection.execute(req):
-        lst.append(row[0])
+        lst.append(row)
     connection.close()
     return lst
+
+
+def modulated_request(req: str, where_arg: str):
+
+    return
 
 
 def get_random_color(number: int):
@@ -65,3 +70,23 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: l
     canvas = canvas.replace('#1', '{')
     canvas = canvas.replace('#2', '}')
     return canvas
+
+
+def graph_total_sub(filename: str):
+    """
+    Return a pie graph with the total submissions per courses in de data base
+    :param filename: data base file path
+    :return:
+    """
+    lst = request(filename, "SELECT course,COUNT(submission)FROM user_tasks GROUP BY course")
+    x_axe, y_axe = list(), list()
+    for i in range(len(lst)):
+        if len(lst[i][0]) > 10:
+            for j in range(len(lst[i][0])):
+                if lst[i][0][j] == '-':
+                    x_axe.append(lst[i][0][:j])
+        else:
+            x_axe.append(lst[i][0])
+        y_axe.append(lst[i][1])
+    return make_graph('pie', 'total_sub', x_axe, "Total submissions", y_axe, True)
+
