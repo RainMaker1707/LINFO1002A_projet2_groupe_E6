@@ -1,5 +1,6 @@
 import sqlite3
 from fcts import read_file,write_file
+from random import randint
 
 def date_format(date):
 	"""
@@ -71,13 +72,14 @@ def get_entries(task):
 	return list of entries
 	[(/entry/),(course,task,date,username,result)]
 	"""
-
 	lst = []
+	
 	c = sqlite3.connect('inginious.sqlite').cursor()
 		
 	for row in c.execute("SELECT task, submitted_on from submissions"):
 		if row[0] == task:
 			lst.append(date_format(row[1]))
+	c.close()
 
 	return lst
 
@@ -85,16 +87,22 @@ def get_dates(task):
 	"""
 	return a tuple with the dates of beginig and end as ints
 	"""
-
+	dates = {}
 	lst = []
 	c = sqlite3.connect('inginious.sqlite').cursor()
 	for row in c.execute("SELECT task, submitted_on from submissions group by submitted_on"):
 		if row[0] == task:
 			lst.append(date_format(row[1]))
+			dates[row[1][5:10].replace("-","/")] = None
 
+	c.close()
 	lst.sort()
 
-	return (lst[0],lst[-1])
+	temp = []
+	for i in dates:
+		temp.append(i)
+
+	return (lst[0],lst[-1],temp)
 
 def get_values(task):
 	dates = get_dates(task)
@@ -104,41 +112,42 @@ def get_values(task):
 	#get dates of each section
 	interval = (dates[1]-dates[0])//bars
 
-	print(dates,bars)
 	#count the submissions
-	for date in get_entries(task):
+	temp = get_entries(task)
+	for date in temp:
 		values[date-dates[0]-1] += 1
-
-	print(values)
 			
-	return (values,bars)
+	return (values,bars,dates[2])
 
 def get_color():
-	return(200,0,0,0.7)
+	return(randint(50,200),randint(50,200),randint(50,200),0.7)
 
-def graph_1(task):
+def graph_1(tasks):
 	"""
+	task can be a list of tuple of strings or a string
 	return the js script for the graph 1 of the given task
 	"""
-	temp = get_values(task)
-	heights = temp[0]
-	bars = temp[1]
-	color = "Red"
+	if tasks == str:
+		tasks = [tasks]
 	dataset = ""
-	dataset += "{"+'label: "{2}",\n fill: true,\n borderColor: "rgba{1}",\n backgroundColor: "rgba{1}",\n data: {0},\n spanGaps: true,\n'.format(heights,str(get_color()),task)+"}"
 
-	labels = '[""'
-	for i in range(bars):
-		labels += ',""'
-	labels += ']'
+	for task in tasks:
+		temp = get_values(task)
+		heights = temp[0]
+		bars = temp[1]
+		color = "Red"
+		
+		dataset += "{"+'label: "{2}",\n fill: true,\n borderColor: "rgba{1}",\n backgroundColor: "rgba{1}",\n data: {0},\n'.format(heights,str(get_color()),task)+"},"
 
 	#create and save the sript
 	script = read_file("template1.html")
-	script = script.replace("#data#",dataset)
-	script = script.replace("#labels#",labels)
+	script = script.replace("#data#",dataset[:-1])
+	script = script.replace("#labels#",str(temp[2]))
+
+	print(temp[2])
 
 	write_file("out.html",script)
 	return script
 
 
-graph_1("intersection")
+graph_1(["intersection","Fibonacci"])

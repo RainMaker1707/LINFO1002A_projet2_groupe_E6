@@ -3,7 +3,22 @@
   <canvas id="myChart"></canvas>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script>
-  
+  function addData(chart, label, data) {
+      chart.data.labels.push(label);
+      chart.data.datasets.forEach((dataset) => {
+          dataset.data.push(data);
+      });
+      chart.update();
+  }
+
+  function removeData(chart) {
+      chart.data.labels.pop();
+      chart.data.datasets.forEach((dataset) => {
+          dataset.data.pop();
+      });
+      chart.update();
+  }
+
     var canvas = document.getElementById("myChart");
     var ctx = canvas.getContext('2d');
 
@@ -12,18 +27,42 @@
     Chart.defaults.global.defaultFontSize = 16;
 
     var data = {
-    labels: ['pass', 'first_try', 'fail', 'error'],
-    datasets: [{label: "intersection",
- backgroundColor: ["rgba(0,200,0,0.8)","rgba(0,255,0,0.8)","rgba(255,0,0,0.8)"],
- data: [66, 14, 2, 6],
+      labels: ['07/16', '07/23', '07/31', '08/06', '10/11', '10/12', '10/13', '10/14', '10/15', '10/16', '10/17', '10/18', '10/19', '10/20', '10/21', '10/22', '10/23', '10/24', '10/25', '10/26', '10/27', '10/28', '10/29', '10/30', '10/31', '11/01', '11/02', '11/03', '11/04', '11/05', '11/06', '11/07', '11/08', '11/10', '11/15', '11/16', '11/17', '11/18', '11/19', '11/20', '11/21', '11/22', '11/23', '11/24', '11/25', '11/26', '11/27', '11/29', '11/30', '12/01', '12/02', '12/05', '12/07', '12/08', '12/09', '12/10', '12/11', '12/12', '12/13', '12/14', '12/15', '12/16', '12/17', '12/18', '12/19', '12/20', '12/21', '12/22', '12/23', '12/24', '12/25', '12/26', '12/27', '12/28', '12/29', '12/30', '12/31', '01/01', '01/02', '01/03', '01/04', '01/05', '01/06', '01/07', '01/08', '01/09', '01/10', '01/11', '01/12', '01/13', '01/25', '02/08'],
+      datasets: [{label: "intersection",
+ fill: true,
+ borderColor: "rgba(134, 151, 73, 0.7)",
+ backgroundColor: "rgba(134, 151, 73, 0.7)",
+ data: [3, 10, 3, 0, 4, 18, 48, 32, 12, 70, 98, 126, 253, 48, 0, 0, 56, 0, 6, 0, 0, 0, 4, 32, 107, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 8, 14, 15],
+},{label: "Fibonacci",
+ fill: true,
+ borderColor: "rgba(50, 144, 88, 0.7)",
+ backgroundColor: "rgba(50, 144, 88, 0.7)",
+ data: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 146, 94, 88, 143, 187, 114, 32, 38, 59, 64, 45, 34, 19, 34, 97, 85, 211, 79, 97, 14, 37, 27, 24, 19, 36, 61, 55, 35, 0, 8, 0, 0, 0, 0, 7, 27, 14, 6, 1, 12, 5, 3, 3, 2, 5, 6, 8, 0, 6, 14, 16, 2, 0, 0, 2, 0, 4, 1, 1, 1, 7, 10, 19, 9, 6, 9, 7, 16, 55, 30, 65, 90, 116, 119, 45, 91, 57, 52, 51, 53, 65, 12, 25, 46, 13, 22, 33, 44, 53, 150, 123, 57, 61, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14],
 }
-    ]
-};
+      ]
+    };
+
+    // Notice the scaleLabel at the same level as Ticks
+    var options = {
+      scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    },
+                    scaleLabel: {
+                         display: true,
+                         labelString: 'Personnes Infectée',
+                         fontSize: 20 
+                      }
+                }]            
+            }  
+    };
 
     // Chart declaration:
     var myBarChart = new Chart(ctx, {
-      type: 'doughnut',
-      data: data
+      type: 'line',
+      data: data,
+      options: options
     });
   </script>
 </html>
