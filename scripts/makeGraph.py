@@ -103,7 +103,6 @@ def double_bar_graph(filename: str, req_fail: str, req_success: str):
     chart += "backgroundColor: 'lime',\n\t\t"
     chart += "data: {0},\n\t\t".format(y_axe_2)
     chart += "}]};\n"
-
     chart += "var myBarChart = new Chart(ctx, {\n\ttype: 'bar',\n\tdata: data,\n\toptions: {\n\t\t"
     chart += "barValueSpacing: 20,\n\t\tscales:{\n\t\t\tyAxes: [{\n\t\t\t\tticks: { min: 0}\n\t\t\t}]\n\t\t}\n\t}\n});"
     chart += "\n</script></canvas>\n"

@@ -1,4 +1,5 @@
-from fcts import *
+from mux.fcts import *
+from scripts.makeGraph import *
 
 ### does non work here, need makegraph()
 

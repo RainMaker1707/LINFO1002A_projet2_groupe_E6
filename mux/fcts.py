@@ -1,16 +1,14 @@
 from random import randint
 import sqlite3
 
+
 def date_format(date):
     """
-    in: date string
-    out: int number of minutes
+    :param date: string
+    :return: int number of minutes
     """
-    #2020-01-10T21:18:29.522+0100
-
     temp = date[0:10]
     days = 0
-
     if temp[0:4] == "2020":
         days += 365
 
@@ -36,7 +34,6 @@ def date_format(date):
             days += 305
         elif temp[5:7] == "12":
             days += 335
-
     else:
         if temp[5:7] == "02":
             days += 31
@@ -60,15 +57,15 @@ def date_format(date):
             days += 304
         elif temp[5:7] == "12":
             days += 334
-
     days += int(temp[8:10])
-
     return days
 
-def get_data(filename,task):
+
+def get_data(filename, task):
     """
-    return a tuple with the dates of beginig and end as ints
-    + the list of dates in string "month/day",...
+    :param filename:
+    :param task:
+    :return a tuple with the dates of beginning and end as ints + the list of dates in string "month/day",...
     """
     dates = {}
     lst = []
@@ -76,33 +73,33 @@ def get_data(filename,task):
     for row in c.execute("SELECT task, submitted_on from submissions order by submitted_on"):
         if row[0] == task:
             lst.append(date_format(row[1]))
-            dates[row[1][0:10].replace("-","/")] = None
+            dates[row[1][0:10].replace("-", "/")] = None
 
     c.close()
     lst.sort()
 
-    temp = ["" for i in range(lst[-1]-lst[0])]
-    for i in dates:
-        temp[date_format(i)-lst[0]-1] = i
-        #values[date-data[0]-1] += 1
+    temp = ["" for _ in range(lst[-1]-lst[0])]
+    for elem in dates:
+        temp[date_format(elem)-lst[0]-1] = elem
+    return lst[0], temp, lst
 
-    return (lst[0],temp,lst)
 
 def get_color():
-    return(randint(50,200),randint(50,200),randint(50,200),0.7)
+    """
+    :return:
+    """
+    return randint(50, 200), randint(50, 200), randint(50, 200), 0.7
 
-def get_entries(filename,task):
+
+def get_entries(filename, task):
     """
     return list of entries
     [(/entry/),(course,task,date,username,result)]
     """
-
     lst = []
     c = sqlite3.connect(filename).cursor()
-        
     for row in c.execute("SELECT task, username, result from submissions ORDER BY submitted_on ASC"):
         if row[0] == task:
             lst.append(row)
     c.close()
-
     return lst

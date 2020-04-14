@@ -18,7 +18,7 @@ def home():
                            GRAPH2=graph_total_sub(db),
                            GRAPH3=make_graph('line', 'graph3', [i for i in range(11)],
                                              "TITLE", [randint(0, 100) for _ in range(11)], True),
-                           MENU=courses_list_templating(db))
+                           MENU=make_menu(db))
 
 
 @app.route('/course/<course>')
@@ -28,5 +28,11 @@ def course_page(course: str):
     req_fail = "SELECT DISTINCT(task), COUNT(result) FROM submissions WHERE course='{0}' GROUP BY task".format(course)
     req_success = "SELECT DISTINCT(task), COUNT(result) FROM submissions " \
                   "WHERE course='{0}'  AND result='success' GROUP BY task".format(course)
-    return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=courses_list_templating(db),
+    return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
                            GRAPH3=double_bar_graph(db, req_fail, req_success))
+
+
+@app.route('/course/<course>/<task>')
+def task_page(course: str, task: str):
+    db = "scripts/DataBase/inginious.sqlite"
+    return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db))

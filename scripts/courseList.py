@@ -1,4 +1,5 @@
 import sqlite3
+from scripts.makeGraph import request
 
 
 def course_list(filename: str):
@@ -19,14 +20,32 @@ def course_list(filename: str):
     return lst
 
 
-def courses_list_templating(filename: str):
+def tasks_list(filename: str, course: str):
+    tasks = request(filename,
+                    "SELECT distinct(task) FROM user_tasks WHERE course LIKE '{0}%' GROUP BY task".format(course))
+    for i in range(len(tasks)):
+        tasks[i] = tasks[i][0]
+    return tasks
+
+
+def make_menu(filename: str):
     """
     :param filename: db file path
     :return: the part of html which define the side bar menu courses list
     """
-    lst = course_list(filename)
+    course_lst = course_list(filename)
     final_str = "<ul>\n<li>Liste des cours\n<ul>"
-    for elem in lst:
-        final_str += "<li><a href=\"/course/{0}\">{0}</a></li>\n".format(elem)
+    for course in course_lst:
+        final_str += "<li><div class='dropButton'> > </div><a href=\"/course/{0}\">{0}</a><ul>\n".format(course)
+
+        task_lst = tasks_list(filename, course)
+        if task_lst:
+            final_str += "<div class='task'>\n"
+        for task in task_lst:
+            final_str += "\t<li><a href=\"/course/{0}/{1}\">{1}</a></li>\n".format(course, task)
+        if task_lst:
+            final_str += "</ul>\n</li>\n</div>\n"
     final_str += "</ul>\n</li>\n</ul>\n"
+    final_str += "<script>\n\t$(\".task\").click(function()"
+    final_str += "{\n\t$(this).toggleClass(\"active\");\t\n\t})\n;</script>"
     return final_str
