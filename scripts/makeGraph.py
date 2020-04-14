@@ -114,7 +114,7 @@ def student_perform_graph(filename: str, task: str):
         else:
             data[2] += 1
     lst = ["success", "failed", "error"]
-    return make_graph("doughnut", "subs_rep", lst, "repartition of best performance by student", data,
+    return make_graph("pie", "subs_rep", lst, "repartition of best performance by student", data,
                       fixed=True, color_lst=['lime', 'red', 'orange'])
 
 
@@ -125,7 +125,7 @@ def graph_2(filename: str, task: str):
     :return:
     """
     entries = request(filename, "SELECT task, username, result from submissions WHERE task='{0}'"
-                                "ORDER BY submitted_on ASC".format(task))
+                                " ORDER BY submitted_on ASC".format(task))
     users_results = {}
     data = [0, 0, 0, 0]
 
@@ -150,4 +150,8 @@ def graph_2(filename: str, task: str):
 
     data[0] -= data[3]
     lst = ["success", "failed", "error"]
-    return make_graph("doughnut", "subs_rep", lst, "repartition of all submissions result", data, True)
+    print(lst, '\t>>>\t', data)
+    return make_graph("doughnut", "subs_rep2", lst, "repartition of all submissions result", data[:3], fill_random=True)
+
+
+
