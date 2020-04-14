@@ -74,20 +74,11 @@ def get_data(filename, task):
         dates[row[1][0:10].replace("-", "/")] = None
     c.close()
     lst.sort()
+
+    if lst == []: return lst[0], temp, lst
+
     temp = ["" for _ in range(lst[-1]-lst[0])]
     for elem in dates:
         temp[date_format(elem)-lst[0]-1] = elem
+
     return lst[0], temp, lst
-
-
-def get_entries(filename, task):
-    """
-    return list of entries
-    [(/entry/),(course,task,date,username,result)]
-    """
-    lst = []
-    c = sqlite3.connect(filename).cursor()
-    for row in c.execute("SELECT task, username, result from submissions WHERE task='{0}'ORDER BY submitted_on ASC".format(task)):
-        lst.append(row)
-    c.close()
-    return lst
