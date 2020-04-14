@@ -69,8 +69,7 @@ def get_data(filename, task):
     dates = {}
     lst = []
     c = sqlite3.connect(filename).cursor()
-    for row in c.execute("SELECT task, submitted_on from submissions order by submitted_on WHERE task='{0}'"
-                         .format(task)):
+    for row in c.execute("SELECT task, submitted_on from submissions WHERE task='{0}' ORDER BY submitted_on".format(task)):
         lst.append(date_format(row[1]))
         dates[row[1][0:10].replace("-", "/")] = None
     c.close()

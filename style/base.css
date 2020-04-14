@@ -52,7 +52,15 @@ nav ul li ul li ul{
     overflow: scroll;
 }
 
-
+.path{
+    color: #fff;
+    font-size: 15px;
+    line-height: 30px;
+    font-family: sans-serif;
+    font-weight: 150;
+    align-items: center;
+    white-space: nowrap;
+}
 
 
 #nav-index{
