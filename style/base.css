@@ -22,13 +22,14 @@ nav ul {
     color: #fff;
     font-family: 'Yanone Kaffeesatz', sans-serif;
     font-weight: 300;
-    font-size: 25px;
+    font-size: 30px;
     line-height: 45px;
 }
 
 nav ul li ul{
     text-align:left;
     margin-left: 15px;
+    font-size: 20px;
 }
 
 nav ul li ul li:active > ul, nav ul li ul li:hover > ul{

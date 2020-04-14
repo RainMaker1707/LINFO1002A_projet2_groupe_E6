@@ -34,7 +34,7 @@ def make_menu(filename: str):
     :return: the part of html which define the side bar menu courses list
     """
     course_lst = course_list(filename)
-    final_str = "<ul>\n<li>Liste des cours\n<ul>"
+    final_str = "<ul>\n<li>Courses List\n<ul>"
     for course in course_lst:
         final_str += "<li><div class='dropButton'> > </div><a href=\"/course/{0}\">{0}</a><ul>\n".format(course)
 
