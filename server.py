@@ -12,7 +12,7 @@ def home():
     db = "scripts/DataBase/inginious.sqlite"
     return render_template("base.html",
                            STYLE=url_for('static', filename="base.css"),
-                           PATH="\tStatistics",
+                           PATH="\t<a href=\"#\">  Statistics  </a>",
                            GRAPH1=double_bar_graph(db, "SELECT course, COUNT(result) FROM submissions GROUP BY course",
                                                    "SELECT course, COUNT(result) FROM submissions WHERE "
                                                    "result=\"success\" GROUP BY course"),
@@ -38,7 +38,8 @@ def course_page(course: str):
 def task_page(course: str, task: str):
     db = "scripts/DataBase/inginious.sqlite"
     return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
-                           PATH="\t{0}\t|\t{1}".format(course, task),
+                           PATH="<a href=\"/course/{0}\">  {0}  </a>|<a href=\"/course/{0}/{1}\">  {1}  </a>".format(
+                               course, task),
                            GRAPH1=student_perform_graph(db, task),
                            GRAPH2=graph_2(db, task),
                            GRAPH3=graph_submissions_repartition(db, task))
