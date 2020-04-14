@@ -1,0 +1,26 @@
+<html>
+  <canvas id="myChart"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script>
+  
+    var canvas = document.getElementById("myChart");
+    var ctx = canvas.getContext('2d');
+
+    // Global Options:
+    Chart.defaults.global.defaultFontColor = 'black';
+    Chart.defaults.global.defaultFontSize = 16;
+
+    var data1 = {
+    labels: #labels1#,
+    datasets: [#data1#
+    ]
+};
+
+    // Chart declaration:
+    var myBarChart1 = new Chart(ctx, {
+      type: 'doughnut',
+      data: data1
+    });
+
+  </script>
+</html>

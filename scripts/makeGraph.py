@@ -25,7 +25,7 @@ def format_request_where(req: str, where_arg: str):
     return req.replace("WHERE ", "WHERE {0}".format(where_arg))
 
 
-def get_random_color(number: int):
+def get_random_colors(number: int):
     """
     :param number: number of tuple
     :return: a list of tuple of color in rgba : (r(0, 250), g(0, 250), b(0, 250), a(0, 1))
@@ -59,11 +59,11 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: l
         canvas += "\tfill : true,\n\tbackgroundColor: [\n\t\t"
 
         if graph_type == "line":
-            lst = get_random_color(1)
+            lst = get_random_colors(1)
             for i in range(len(data)):
                 canvas += "\"rgba{0}\",\n\t\t".format(lst[0])
         else:
-            lst = get_random_color(len(labels))
+            lst = get_random_colors(len(labels))
             for i in range(len(lst)):
                 canvas += "\"rgba{0}\",\n\t\t".format(lst[i])
         canvas += "],\n\t"
