@@ -30,7 +30,8 @@ def course_page(course: str):
     req_success = "SELECT DISTINCT(task), COUNT(result) FROM submissions " \
                   "WHERE course='{0}'  AND result='success' GROUP BY task".format(course)
     return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
-                           PATH="\t{0}\t".format(course),
+                           PATH="\t<a href=\"/\">  Statistics  </a>|"
+                                "<a href=\"/course/{0}\">  {0}  </a>\t".format(course),
                            GRAPH3=double_bar_graph(db, req_fail, req_success))
 
 
@@ -38,7 +39,8 @@ def course_page(course: str):
 def task_page(course: str, task: str):
     db = "scripts/DataBase/inginious.sqlite"
     return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
-                           PATH="<a href=\"/course/{0}\">  {0}  </a>|<a href=\"/course/{0}/{1}\">  {1}  </a>".format(
+                           PATH="\t<a href=\"/\">  Statistics  </a>|<a href=\"/course/{0}\">  {0}  "
+                                "</a>|<a href=\"/course/{0}/{1}\">  {1}  </a>".format(
                                course, task),
                            GRAPH1=student_perform_graph(db, task),
                            GRAPH2=best_user_perf(db, task),
