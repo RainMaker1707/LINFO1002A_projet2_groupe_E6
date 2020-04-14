@@ -30,7 +30,8 @@ def course_page(course: str):
     req_success = "SELECT DISTINCT(task), COUNT(result) FROM submissions " \
                   "WHERE course='{0}'  AND result='success' GROUP BY task".format(course)
     return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
-                           PATH="\t{0}\t".format(course),
+                           PATH="\t<a href=\"/\">  Statistics  </a>|"
+                                "<a href=\"/course/{0}\">  {0}  </a>\t".format(course),
                            GRAPH3=double_bar_graph(db, req_fail, req_success))
 
 
