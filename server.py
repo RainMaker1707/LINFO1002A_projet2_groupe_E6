@@ -17,8 +17,6 @@ def home():
                                                    "SELECT course, COUNT(result) FROM submissions WHERE "
                                                    "result=\"success\" GROUP BY course"),
                            GRAPH2=graph_total_sub(db),
-                           GRAPH3=make_graph('line', 'graph3', [i for i in range(11)],
-                                             "TITLE", [randint(0, 100) for _ in range(11)], True),
                            MENU=make_menu(db))
 
 
