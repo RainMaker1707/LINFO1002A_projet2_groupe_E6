@@ -1,16 +1,17 @@
-import sqlite3
-from fcts import get_entries
+from mux.fcts import get_entries
+from scripts.makeGraph import make_graph
 
-### does non work here, need makegraph()
 
 def graph_2(filename: str, task: str):
 	"""
-	return the js script for the graph 1 of the given task
+	:param filename:
+	:param task:
+	:return:
 	"""
-	entries = get_entries(filename,task)
+	entries = get_entries(filename, task)
 	users_results = {}
-	data = [0,0,0,0]
-	
+	data = [0, 0, 0, 0]
+
 	for entry in entries:
 		if entry[1] not in users_results:
 			users_results[entry[1]] = entry[2]
@@ -31,15 +32,18 @@ def graph_2(filename: str, task: str):
 			data[2] += 1
 
 	data[0] -= data[3]
+	lst = ["success", "failed", "error"]
+	return make_graph("line", "subs_rep", lst, "repartition of all submissions result", data)
 
-
-	return make_graph("line","subs_rep",["success","failed","error","first try"],"reapartition of all submissions result",data)
 
 def graph_3(filename: str, task: str):
 	"""
+	:param filename:
+	:param task:
+	:return:
 	"""
-	entries = get_entries(filename,task)
-	data = [0,0,0]
+	entries = get_entries(filename, task)
+	data = [0, 0, 0]
 
 	for entry in entries:
 		if entry[2] == 'success':
@@ -48,5 +52,5 @@ def graph_3(filename: str, task: str):
 			data[1] += 1
 		else:
 			data[2] += 1
-
-	return make_graph("line","subs_rep",["success","failed","error"],"reapartition of best performance by student",data)
+	lst = ["success", "failed", "error"]
+	return make_graph("line", "subs_rep", lst, "repartition of best performance by student", data)

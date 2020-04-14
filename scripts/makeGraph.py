@@ -1,42 +1,8 @@
-from random import randint
-import sqlite3
+from scripts.functions import *
 
 
-def request(filename: str, req: str):
-    """
-    :param filename: filename of the data base
-    :param req: SQL request to send to bdd
-    :return: a list of the tuple gave from SQL request
-    """
-    connection = sqlite3.connect(filename).cursor()
-    lst = list()
-    for row in connection.execute(req):
-        lst.append(row)
-    connection.close()
-    return lst
-
-
-def format_request_where(req: str, where_arg: str):
-    """
-    :param req: SQL request to format
-    :param where_arg: arg to set at WHERE="where_arg"
-    :return: str: a clean SQL request with set WHERE
-    """
-    return req.replace("WHERE ", "WHERE {0}".format(where_arg))
-
-
-def get_random_colors(number: int):
-    """
-    :param number: number of tuple
-    :return: a list of tuple of color in rgba : (r(0, 250), g(0, 250), b(0, 250), a(0, 1))
-    """
-    lst = list()
-    for i in range(number):
-        lst.append((randint(0, 250), randint(0, 250), randint(0, 250), 0.8))
-    return lst
-
-
-def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: list, fill=False, options: str = None):
+def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: list, fill_random=False,
+               options: str = None, fixed=False, color_lst=None):
     """
     Function which return a canvas with the chart.js script set with the following datas
     :param graph_type: type of the graph ( bar, line, doughnut, pie, etc)
@@ -44,18 +10,22 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: l
     :param labels: list of the labels on the X axes for the typical graph or name of part in doughnut/pie graph
     :param title: title of the graph when is axes graph
     :param data: data for y axe graph or part of pie/doughnut
-    :param fill: to fill with random color
+    :param fill_random: to fill with random color
+    :param fixed: if you want fixed colors you have to pass a list of these color in arg a nd set fixed at True
+    :param color_lst: list of color you want in the graph
     :param options: options you want to set in
     :return: the string part of the html code to plain the template
     """
-    if len(data) != len(labels):
-        return "ERROR data and labels must have the same len\n"
+    # if len(data) != len(labels):
+    #    return "ERROR data and labels must have the same len\n"
 
     canvas = "<canvas id=\"{0}\">\n<script>\nvar ctx = document.getElementById('{0}')".format(graph_id)
     canvas += ".getContext('2d');\n"
     canvas += "var myChart = new Chart(ctx, {\n"
     canvas += "type:'{0}',\ndata: #1\nlabels: {1},\ndatasets: [#1\n\tlabel: '{2}',\n".format(graph_type, labels, title)
-    if fill:
+    if fixed and color_lst:
+        canvas += "\tfill: true,\n\tbackgroundColor : {0},\n".format(color_lst)
+    elif fill_random:
         canvas += "\tfill : true,\n\tbackgroundColor: [\n\t\t"
 
         if graph_type == "line":
@@ -103,7 +73,6 @@ def double_bar_graph(filename: str, req_fail: str, req_success: str):
     chart += "backgroundColor: 'lime',\n\t\t"
     chart += "data: {0},\n\t\t".format(y_axe_2)
     chart += "}]};\n"
-
     chart += "var myBarChart = new Chart(ctx, {\n\ttype: 'bar',\n\tdata: data,\n\toptions: {\n\t\t"
     chart += "barValueSpacing: 20,\n\t\tscales:{\n\t\t\tyAxes: [{\n\t\t\t\tticks: { min: 0}\n\t\t\t}]\n\t\t}\n\t}\n});"
     chart += "\n</script></canvas>\n"
@@ -126,3 +95,59 @@ def graph_total_sub(filename: str):
             x_axe.append(lst[i][0])
         y_axe.append(lst[i][1])
     return make_graph('pie', 'total_sub', x_axe, "Total submissions", y_axe, True)
+
+
+def student_perform_graph(filename: str, task: str):
+    """
+    :param filename:
+    :param task:
+    :return:
+    """
+    entries = request(filename, "SELECT task, username, result from submissions WHERE task='{0}'"
+                                "ORDER BY submitted_on ASC".format(task))
+    data = [0, 0, 0]
+    for entry in entries:
+        if entry[2] == 'success':
+            data[0] += 1
+        elif entry[2] == 'failed':
+            data[1] += 1
+        else:
+            data[2] += 1
+    lst = ["success", "failed", "error"]
+    return make_graph("doughnut", "subs_rep", lst, "repartition of best performance by student", data,
+                      fixed=True, color_lst=['lime', 'red', 'orange'])
+
+
+def graph_2(filename: str, task: str):
+    """
+    :param filename:
+    :param task:
+    :return:
+    """
+    entries = request(filename, "SELECT task, username, result from submissions WHERE task='{0}'"
+                                "ORDER BY submitted_on ASC".format(task))
+    users_results = {}
+    data = [0, 0, 0, 0]
+
+    for entry in entries:
+        if entry[1] not in users_results:
+            users_results[entry[1]] = entry[2]
+            if entry[2] == 'success':
+                data[3] += 1
+
+        elif users_results[entry[1]] == 'failed':
+            users_results[entry[1]] = entry[2]
+
+    for result in users_results.items():
+        if result[1] == 'success':
+            data[0] += 1
+
+        elif result[1] == 'failed':
+            data[1] += 1
+
+        else:
+            data[2] += 1
+
+    data[0] -= data[3]
+    lst = ["success", "failed", "error"]
+    return make_graph("doughnut", "subs_rep", lst, "repartition of all submissions result", data, True)

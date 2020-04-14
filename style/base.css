@@ -1,3 +1,4 @@
+
 nav{
     padding-top: 15px;
     padding-left: 10px;
@@ -9,29 +10,52 @@ nav{
     bottom: 0;
     top: 0;
     padding-top: 45px;
-}
-
-nav ul li ul{
-    display: block;
-    text-decoration: none;
-    align-items: right;
-    text-align: center;
+    overflow: scroll;
 }
 
 nav ul {
     display: block;
-    align-items: center;
+    text-decoration: none;
+    align-items: right;
+    text-align: center;
     list-style: none;
     color: #fff;
     font-family: 'Yanone Kaffeesatz', sans-serif;
     font-weight: 300;
     font-size: 25px;
     line-height: 45px;
-    text-align: center;
+}
+
+nav ul li ul{
+    text-align:left;
+    margin-left: 15px;
+}
+
+nav ul li ul li:active > ul, nav ul li ul li:hover > ul{
+    display: block;
 }
 
 
-#nav-index, a{
+.dropButton{
+    display: inline-block;
+    margin-right: 5px;
+}
+
+
+nav ul li ul li ul{
+    display: none;
+    font-size: 15px;
+    text-align:left;
+    margin-left: 25px;
+    max-height: 40vh;
+    line-height: 20px;
+    overflow: scroll;
+}
+
+
+
+
+#nav-index{
     text-align: left;
     color: #fff;
     text-decoration: none;
@@ -83,7 +107,7 @@ header{
 .mainGraphCont{
     height: auto;
     width: 50%;
-    minimum-width: 20%;
+    minimum-width: 20vw;
     margin: 20px;
     display: flex;
     align-items: center;
@@ -96,6 +120,11 @@ header{
     padding: 0;
     margin: 0;
     border: 0;
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
 }
 
 :root{
