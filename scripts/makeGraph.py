@@ -149,9 +149,9 @@ def graph_2(filename: str, task: str):
             data[2] += 1
 
     data[0] -= data[3]
-    lst = ["success", "failed", "error"]
+    lst = ["success", "failed", "error","first try"]
     print(lst, '\t>>>\t', data)
-    return make_graph("doughnut", "subs_rep2", lst, "repartition of all submissions result", data[:3], fill_random=True)
+    return make_graph("doughnut", "subs_rep2", lst, "repartition of all submissions result", data, fill_random=True)
 
 
 
