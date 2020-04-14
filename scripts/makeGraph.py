@@ -103,7 +103,7 @@ def student_perform_graph(filename: str, task: str):
     :param task:
     :return:
     """
-    entries = request(filename, "SELECT task, username, result from submissions WHERE task='{0}'"
+    entries = request(filename, "SELECT task, username, result FROM submissions WHERE task='{0}'"
                                 "ORDER BY submitted_on ASC".format(task))
     data = [0, 0, 0]
     for entry in entries:
@@ -113,7 +113,12 @@ def student_perform_graph(filename: str, task: str):
             data[1] += 1
         else:
             data[2] += 1
+
+    if data == [0, 0, 0]:
+        return "it apears, we have no submissions for this task."
+
     lst = ["success", "failed", "error"]
+    
     return make_graph("pie", "subs_rep", lst, "repartition of best performance by student", data,
                       fixed=True, color_lst=['lime', 'red', 'orange'])
 
@@ -124,7 +129,7 @@ def best_user_perf(filename: str, task: str):
     :param task:
     :return:
     """
-    entries = request(filename, "SELECT task, username, result from submissions WHERE task='{0}'"
+    entries = request(filename, "SELECT task, username, result FROM submissions WHERE task='{0}'"
                                 " ORDER BY submitted_on ASC".format(task))
     users_results = {}
     data = [0, 0, 0, 0]
@@ -149,9 +154,10 @@ def best_user_perf(filename: str, task: str):
             data[2] += 1
 
     data[0] -= data[3]
-    lst = ["success", "failed", "error","first try"]
-    print(lst, '\t>>>\t', data)
+
+    if data == [0, 0, 0]:
+        return "it apears, we have no submissions for this task."
+
+    lst = ["success", "failed", "error", "first try"]
+
     return make_graph("doughnut", "subs_rep2", lst, "repartition of all submissions result", data, fill_random=True)
-
-
-
