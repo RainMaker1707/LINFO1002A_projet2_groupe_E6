@@ -1,4 +1,3 @@
-from random import randint
 import sqlite3
 
 
@@ -70,25 +69,16 @@ def get_data(filename, task):
     dates = {}
     lst = []
     c = sqlite3.connect(filename).cursor()
-    for row in c.execute("SELECT task, submitted_on from submissions order by submitted_on"):
-        if row[0] == task:
-            lst.append(date_format(row[1]))
-            dates[row[1][0:10].replace("-", "/")] = None
-
+    for row in c.execute("SELECT task, submitted_on from submissions order by submitted_on WHERE task='{0}'"
+                         .format(task)):
+        lst.append(date_format(row[1]))
+        dates[row[1][0:10].replace("-", "/")] = None
     c.close()
     lst.sort()
-
     temp = ["" for _ in range(lst[-1]-lst[0])]
     for elem in dates:
         temp[date_format(elem)-lst[0]-1] = elem
     return lst[0], temp, lst
-
-
-def get_color():
-    """
-    :return:
-    """
-    return randint(50, 200), randint(50, 200), randint(50, 200), 0.7
 
 
 def get_entries(filename, task):
@@ -98,8 +88,7 @@ def get_entries(filename, task):
     """
     lst = []
     c = sqlite3.connect(filename).cursor()
-    for row in c.execute("SELECT task, username, result from submissions ORDER BY submitted_on ASC"):
-        if row[0] == task:
-            lst.append(row)
+    for row in c.execute("SELECT task, username, result from submissions WHERE task='{0}'ORDER BY submitted_on ASC".format(task)):
+        lst.append(row)
     c.close()
     return lst

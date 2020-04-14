@@ -35,4 +35,5 @@ def course_page(course: str):
 @app.route('/course/<course>/<task>')
 def task_page(course: str, task: str):
     db = "scripts/DataBase/inginious.sqlite"
-    return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db))
+    return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
+                           GRAPH1=student_perform_graph(db, task))

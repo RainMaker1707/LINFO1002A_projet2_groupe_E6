@@ -1,5 +1,5 @@
 import sqlite3
-from scripts.makeGraph import request
+from scripts.functions import request
 
 
 def course_list(filename: str):
