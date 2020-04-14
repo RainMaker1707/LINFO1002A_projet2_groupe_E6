@@ -1,5 +1,37 @@
+nav{
+    padding-top: 15px;
+    padding-left: 10px;
+    background-color: #333;
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    padding-top: 45px;
+}
 
-#nav-index{
+nav ul li ul{
+    display: block;
+    text-decoration: none;
+    align-items: right;
+    text-align: center;
+}
+
+nav ul {
+    display: block;
+    align-items: center;
+    list-style: none;
+    color: #fff;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-weight: 300;
+    font-size: 25px;
+    line-height: 45px;
+    text-align: center;
+}
+
+
+#nav-index, a{
     text-align: left;
     color: #fff;
     text-decoration: none;
@@ -37,15 +69,26 @@ header{
 }
 
 .FirstLineGraph{
+    margin-top: 50px;
+    margin-left: 150px;
     display: flex;
     align-items: center;
-    align: center;
+}
+
+.secondLineGraph{
+    margin-right: 250px;
+    margin-left: 50px;
 }
 
 .mainGraphCont{
     height: auto;
-    width: 700px;
-    padding: 70px;
+    width: 50%;
+    minimum-width: 20%;
+    margin: 20px;
+    display: flex;
+    align-items: center;
+    padding: 1px;
+    margin-left: -100px;
 }
 
 *, *::before, *::after {

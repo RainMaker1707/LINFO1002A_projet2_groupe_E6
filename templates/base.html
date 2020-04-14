@@ -19,88 +19,20 @@
 <body>
 <div class="FirstLineGraph">
     <div class="mainGraphCont">
-        <canvas id="main_graph">
-        <script>
-        var ctx = document.getElementById('main_graph').getContext('2d');
-        var myChart = new Chart(ctx, {
-
-        // le type du graph
-	    type: 'bar',
-
-	    // datas
-	    data: {
-        labels: ['a', 'b', 'c', 'd', 'e'],
-        datasets: [{
-                    label: 'time',
-                    fill: true,
-                    borderColor: [
-                                 "rgba(50, 250, 20, 0.8)",
-                                 "rgba(250, 50, 50, 0.8)",
-                                 "rgba(50, 50, 250, 0.8)",
-                                 "rgba(250, 250, 50, 0.8)",
-                                 "rgba(250, 50, 250, 0.8)"
-                                 ],
-                    backgroundColor: [
-                                     "rgba(50,250,20,0.5)",
-                                     "rgba(250, 50, 50, 0.5)",
-                                     "rgba(50, 50, 250, 0.5)",
-                                     "rgba(250, 250, 50, 0.5)",
-                                     "rgba(250, 50, 250, 0.5)"
-                                     ],
-                    data: [1, 3, 5, 2, 7]
-
-                }]
-	        },
-	    options: {
-	        scales: {
-	            yAxes: [{
-	                ticks: {
-	                    beginAtZero:true
-	                    }
-	                }]
-	            }
-	        }
-	    });
-        </script>
-        </canvas>
+       {{GRAPH1 | safe}}
     </div>
 
     <div class="mainGraphCont">
-        <canvas id="main_graph2">
-        <script>
-        var ctx = document.getElementById('main_graph2').getContext('2d');
-        var myChart = new Chart(ctx, {
-
-        // le type du graph
-	    type: 'doughnut',
-	    // datas
-	    data: {
-        labels: ['a', 'b', 'c', 'd', 'e'],
-        datasets: [{
-                    label: 'time',
-                    fill: true,
-                    borderColor: [
-                                 "rgba(50, 250, 20, 0.8)",
-                                 "rgba(250, 50, 50, 0.8)",
-                                 "rgba(50, 50, 250, 0.8)",
-                                 "rgba(250, 250, 50, 0.8)",
-                                 "rgba(250, 50, 250, 0.8)"
-                                 ],
-                    backgroundColor: [
-                                     "rgba(50,250,20,0.5)",
-                                     "rgba(250, 50, 50, 0.5)",
-                                     "rgba(50, 50, 250, 0.5)",
-                                     "rgba(250, 250, 50, 0.5)",
-                                     "rgba(250, 50, 250, 0.5)"
-                                     ],
-                    data: [1, 3, 5, 2, 7]
-                }]
-	        }
-	    });
-        </script>
-        </canvas>
+       {{GRAPH2 | safe}}
     </div>
 </div>
+<div class="secondLineGraph">
+    {{GRAPH3 | safe}}
+</div>
+<nav class="sideNav">
+   {{MENU | safe}}
+</nav>
+
 </body>
 
 </html>
