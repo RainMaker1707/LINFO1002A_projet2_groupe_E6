@@ -1,30 +1,17 @@
 import sqlite3
-from fcts import read_file,write_file
+from fcts import get_entries
 
-def get_entries(task):
+### does non work here, need makegraph()
+
+def graph_2(filename: str, task: str):
 	"""
-	return list of entries
-	[(/entry/),(course,task,date,username,result)]
+	return the js script for the graph 1 of the given task
 	"""
-
-	lst = []
-	c = sqlite3.connect('inginious.sqlite').cursor()
-		
-	for row in c.execute("SELECT task, username, result from submissions ORDER BY submitted_on ASC"):
-		if row[0] == task:
-			lst.append(row)
-	c.close()
-
-	return lst
-
-def get_values(task):
-	temp = get_entries(task)
+	entries = get_entries(filename,task)
 	users_results = {}
 	data = [0,0,0,0]
-	data2 = [0,0,0]
-
-	for entry in temp:
-		#first dataset
+	
+	for entry in entries:
 		if entry[1] not in users_results:
 			users_results[entry[1]] = entry[2]
 			if entry[2] == 'success':
@@ -33,37 +20,33 @@ def get_values(task):
 		elif users_results[entry[1]] == 'failed':
 			users_results[entry[1]] = entry[2]
 
-		#second dataset
-		if entry[2] == 'success':
-			data2[0] += 1
-		elif entry[2] == 'failed':
-			data2[1] += 1
-		else:
-			data2[2] += 1
-
-	for i in users_results.items():
-		if i[1] == 'success':
+	for result in users_results.items():
+		if result[1] == 'success':
 			data[0] += 1
-		elif i[1] == 'failed':
+
+		elif result[1] == 'failed':
+			data[1] += 1
+
+		else:
+			data[2] += 1
+
+	data[0] -= data[3]
+
+
+	return make_graph("line","subs_rep",["success","failed","error","first try"],"reapartition of all submissions result",data)
+
+def graph_3(filename: str, task: str):
+	"""
+	"""
+	entries = get_entries(filename,task)
+	data = [0,0,0]
+
+	for entry in entries:
+		if entry[2] == 'success':
+			data[0] += 1
+		elif entry[2] == 'failed':
 			data[1] += 1
 		else:
 			data[2] += 1
-	return (data,data2)
 
-
-def graph_2(task):
-	"""
-	return the js script for the graph 1 of the given task
-	"""
-	data = get_values(task)
-	dataset1 = "{"+'label: "{1}",\n backgroundColor: ["rgba(0,200,0,0.8)","rgba(255,0,0,0.8)","rgba(130,130,130,0.5)","rgba(0,255,0,0.8)"],\n data: {0},\n'.format(data[0],task)+"}"
-	dataset1 += ",{"+'label: "{1}",\n backgroundColor: ["rgba(0,200,0,0.8)", "rgba(255,0,0,0.8)","rgba(130,130,130,0.5)"],\n data: {0},\n'.format(data[1],task)+"}"
-	#create and save the sript
-	script = read_file("template2.html")
-	script = script.replace("#data1#",dataset1)
-	script = script.replace("#labels1#",str(["pass","fail","error","first_try"]))
-
-	write_file("out.html",script)
-	return script
-
-graph_2("intersection")
+	return make_graph("line","subs_rep",["success","failed","error"],"reapartition of best performance by student",data)

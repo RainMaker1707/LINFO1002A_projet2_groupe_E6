@@ -1,29 +1,6 @@
 from random import randint
 import sqlite3
 
-def write_file(path,text):
-    """
-    path = string
-    text = string
-
-    write the string to the file in the path
-    """
-    with open(path, 'w') as file:
-        file.write(text)
-
-def read_file(path):
-    """
-    return one string with the entire file
-    """
-    content_str = ""
-    try:
-        with open(path, 'r') as file:
-            for line in file:
-                content_str += line
-    except:
-        pass
-    return content_str
-
 def date_format(date):
     """
     in: date string
@@ -113,3 +90,19 @@ def get_data(filename,task):
 
 def get_color():
     return(randint(50,200),randint(50,200),randint(50,200),0.7)
+
+def get_entries(filename,task):
+    """
+    return list of entries
+    [(/entry/),(course,task,date,username,result)]
+    """
+
+    lst = []
+    c = sqlite3.connect(filename).cursor()
+        
+    for row in c.execute("SELECT task, username, result from submissions ORDER BY submitted_on ASC"):
+        if row[0] == task:
+            lst.append(row)
+    c.close()
+
+    return lst
