@@ -118,7 +118,7 @@ def student_perform_graph(filename: str, task: str):
                       fixed=True, color_lst=['lime', 'red', 'orange'])
 
 
-def graph_2(filename: str, task: str):
+def best_user_perf(filename: str, task: str):
     """
     :param filename:
     :param task:

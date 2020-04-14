@@ -41,5 +41,5 @@ def task_page(course: str, task: str):
                            PATH="<a href=\"/course/{0}\">  {0}  </a>|<a href=\"/course/{0}/{1}\">  {1}  </a>".format(
                                course, task),
                            GRAPH1=student_perform_graph(db, task),
-                           GRAPH2=graph_2(db, task),
+                           GRAPH2=best_user_perf(db, task),
                            GRAPH3=graph_submissions_repartition(db, task))
