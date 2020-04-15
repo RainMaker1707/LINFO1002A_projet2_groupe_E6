@@ -21,7 +21,7 @@ def graph_submissions_repartition(filename: str, task: str):
 		dates[entry[1][0:10].replace("-", "/")] = None
 
 	days_lst.sort()
-	dates_lst = date_dic_to_list(dates,days_lst[-1]-days_lst[0],days_lst[0])
+	dates_lst = date_dic_to_list(dates, days_lst[-1]-days_lst[0], days_lst[0])
 
 	values = [0 for _ in range(len(dates_lst))]
 	for date in days_lst:

@@ -36,7 +36,6 @@ nav ul li ul li:active > ul, nav ul li ul li:hover > ul{
     display: block;
 }
 
-
 .dropButton{
     display: inline-block;
     margin-right: 5px;
