@@ -238,7 +238,10 @@ def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, titl
             if score == user[0]:
                 data.append(1 - poss/1000)
                 break
-        titles.append(user)
+        if len(user) > 2:
+            titles.append(user[2]+" "+user[1]+" "+str(user[0]))
+        else:
+            titles.append(user[1]+" "+str(user[0]))
 
     return make_graph(graph_type, graph_id, titles, title, data, True,
                       options="scales: { xAxes: [{display: true}], yAxes: [{display: false}]}")
