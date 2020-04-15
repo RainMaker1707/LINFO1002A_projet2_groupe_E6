@@ -24,8 +24,8 @@ def home():
                            GRAPH4=top_subs_count(db, 100, "line",
                                                  "SELECT SUM(tried), course, username  FROM user_tasks "
                                                  "GROUP BY username, course",
-                                                 "Podium of student with smallest submissions numbers per course",
-                                                 "graph4", False),
+                                                 "Podium of student with highest submissions numbers per course",
+                                                 "graph4", True),
                            MENU=make_menu(db))
 
 

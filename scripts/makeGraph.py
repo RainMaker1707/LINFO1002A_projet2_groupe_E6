@@ -213,7 +213,7 @@ def inter_fun_y_axe(top_list):
     return x_axe, length, lst
 
 
-def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, title: str, graph_id: str, mirrored=False):
+def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, title: str, graph_id: str, mirrored=False, podium=False):
     """
     :param filename:
     :param top_size:
@@ -224,24 +224,37 @@ def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, titl
     :param mirrored: True = top worst, False = top best
     :return:
     """
-    data = request(filename, req)
+    datas = request(filename, req)
     if mirrored:
-        data.sort(reverse=True)
+        datas.sort(reverse=True)
     else:
-        data.sort()
-    lst, length, scores = inter_fun_y_axe(data[0:top_size])
-    data = []
-    titles = []
-    user: tuple
-    for user in lst:
-        for poss, score in enumerate(scores):
-            if score == user[0]:
-                data.append(1 - poss/1000)
-                break
-        if len(user) > 2:
-            titles.append(user[2]+" "+user[1]+" "+str(user[0]))
-        else:
-            titles.append(user[1]+" "+str(user[0]))
+        datas.sort()
+    if podium == True:
+        lst, length, scores = inter_fun_y_axe(datas[0:top_size])
+
+        data = []
+        titles = []
+        user: tuple
+        for user in lst:
+            for poss, score in enumerate(scores):
+                if score == user[0]:
+                    data.append(1 - poss/1000)
+                    break
+            if len(user) > 2:
+                titles.append(user[2]+" "+user[1]+" "+str(user[0]))
+            else:
+                titles.append(user[1]+" "+str(user[0]))
+
+    else:
+        datas = datas[0:top_size]
+        data = []
+        titles = []
+        for entry in datas:
+            data.append(entry[0])
+            if len(entry) > 2:
+                titles.append(entry[1]+" "+entry[2])
+            else:
+                titles.append(entry[1])
 
     return make_graph(graph_type, graph_id, titles, title, data, True,
                       options="scales: { xAxes: [{display: true}], yAxes: [{display: false}]}")
