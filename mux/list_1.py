@@ -1,19 +1,5 @@
 import sqlite3
 
-def request(filename: str, req: str):
-    """
-    :param filename: filename of the data base
-    :param req: SQL request to send to bdd
-    :return: a list of the tuple gave from SQL request
-    """
-    connection = sqlite3.connect(filename).cursor()
-    lst = list()
-    for row in connection.execute(req):
-        lst.append(row)
-    connection.close()
-    return lst
-
-
 def inter_fun_y_axe(top_list):
     top_list.reverse()
     x_axe = [0 for _ in range(len(top_list))]
@@ -32,23 +18,14 @@ def inter_fun_y_axe(top_list):
     return x_axe, lenght, lst
 
 
-def top_winrate(filename: str, mirored=False, *course: str, **task:str):
-	"""
-	"""
-	pass
-
-def top_subs_count(filename: str, top_size: int, mirored=False, by_course=False, by_task=False):
+def top_subs_count(filename: str, top_size: int, req: str, mirored=False):
 	"""
 	:param filename:
 	:param top_size:
+	:param req: the sql request of 2 or 3 elements
+	:param mirored: True = top worst, False = top best
+	:return: 
 	"""
-	if by_course:
-		req = "SELECT SUM(tried), course, username  FROM user_tasks GROUP BY username, course"
-	elif by_task:
-		req = "SELECT SUM(tried), task, username FROM user_tasks GROUP BY username, task"
-	else:
-		req = "SELECT SUM(tried), username FROM user_tasks GROUP BY username"
-
 	data = request(filename,req)
 	if mirored:
 		data.sort(reverse=True)
@@ -71,6 +48,8 @@ def top_subs_count(filename: str, top_size: int, mirored=False, by_course=False,
 		else:
 			titles.append((user[0],user[1]))
 
-	return data,titles
+	return make_graph("bar","top_subs_1",titles,"TITLE",data,True)
 
-print(top_subs_count("inginious.sqlite",5))
+#"SELECT SUM(tried), course, username  FROM user_tasks GROUP BY username, course"
+#"SELECT SUM(tried), task, username FROM user_tasks GROUP BY username, task"
+#"SELECT SUM(tried), username FROM user_tasks GROUP BY username"
