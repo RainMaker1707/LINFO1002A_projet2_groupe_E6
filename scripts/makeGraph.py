@@ -155,7 +155,7 @@ def best_user_perf(filename: str, task: str):
 
     data[0] -= data[3]
 
-    if data == [0, 0, 0]:
+    if data == [0, 0, 0, 0]:
         return "it apears, we have no submissions for this task."
 
     lst = ["success", "failed", "error", "first try"]
