@@ -78,25 +78,19 @@ def get_colors(number: int):
 
 def date_format(date: str):
     """
-    :param date: string yyyy-mm-dd...
+    :param date: string 'yyyy-mm-dd'...
     :return: int number of days
-    only works for dates between 2000 and 2099
+    only works for dates from 2000
     """
-    temp = date[0:10]
     days = 0
     leap_months = [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335]
     normal_months = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
-
-    leap_year = False
-    if int(temp[0:4]) % 4 == 0 and int(temp[0:4]) % 100 == 0 and int(temp[0:4]) % 400 == 0:
-        leap_year = True
-
-    if leap_year:
+    if leap(int(date[:4])):
         days += leap_months[int(date[5:7])-1]
     else:
         days += normal_months[int(date[5:7])-1]
-    days += int(temp[8:10])
-    days += int(temp[2:4])*365
+    days += int(date[8:10])
+    days += int(date[2:4])*365
 
     return days
 
@@ -112,15 +106,3 @@ def date_dic_to_list(dic: dict, days: int, day_1: int):
     for elem in dic:
         lst[date_format(elem)-day_1-1] = elem
     return lst
-
-
-def leap(year):
-    leap_flag = False
-    if year % 4 == 0:
-        leap_flag = True
-    if year % 100 == 0:
-        leap_flag = False
-    if year % 400 == 0:
-        leap_flag = True
-    return leap_flag
-

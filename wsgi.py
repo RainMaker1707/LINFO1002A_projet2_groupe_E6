@@ -17,6 +17,15 @@ def home():
                                                    "SELECT course, COUNT(result) FROM submissions WHERE "
                                                    "result=\"success\" GROUP BY course"),
                            GRAPH2=graph_total_sub(db),
+                           GRAPH3=top_subs_count(db, 50, "bar",
+                                                 "SELECT SUM(tried), username FROM user_tasks GROUP BY username",
+                                                 "Podium of student with smallest submissions numbers",
+                                                 "graph3", False),
+                           GRAPH4=top_subs_count(db, 100, "line",
+                                                 "SELECT SUM(tried), course, username  FROM user_tasks "
+                                                 "GROUP BY username, course",
+                                                 "Podium of student with smallest submissions numbers per course",
+                                                 "graph4", False),
                            MENU=make_menu(db))
 
 
@@ -30,7 +39,12 @@ def course_page(course: str):
     return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
                            PATH="\t<a href=\"/\">  Statistics  </a>|"
                                 "<a href=\"/course/{0}\">  {0}  </a>\t".format(course),
-                           GRAPH3=double_bar_graph(db, req_fail, req_success))
+                           GRAPH3=double_bar_graph(db, req_fail, req_success),
+                           GRAPH4=top_subs_count(db, 100, "line",
+                                                 "SELECT SUM(tried), task, username FROM user_tasks "
+                                                 "WHERE course='{0}' GROUP BY username, task ".format(course),
+                                                 "Podium of student with highest submissions numbers per task",
+                                                 "graph4", True))
 
 
 @app.route('/course/<course>/<task>')

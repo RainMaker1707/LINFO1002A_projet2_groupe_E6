@@ -37,7 +37,6 @@ def make_menu(filename: str):
     final_str = "<ul>\n<li>Courses List\n<ul>"
     for course in course_lst:
         final_str += "<li><div class='dropButton'> > </div><a href=\"/course/{0}\">{0}</a><ul>\n".format(course)
-
         task_lst = tasks_list(filename, course)
         if task_lst:
             final_str += "<div class='task'>\n"
