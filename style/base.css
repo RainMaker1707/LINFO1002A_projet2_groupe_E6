@@ -111,9 +111,16 @@ header{
     align-items: center;
 }
 
+p{
+    color: --warning;
+    font-weight: 400;
+    font-size: 40px;
+}
+
 .secondLineGraph{
     margin-right: 250px;
     margin-left: 50px;
+    text-align: center;
 }
 
 .mainGraphCont{

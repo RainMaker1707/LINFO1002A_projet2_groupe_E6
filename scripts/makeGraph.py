@@ -115,7 +115,7 @@ def student_perform_graph(filename: str, task: str):
         else:
             data[2] += 1
     if data == [0, 0, 0]:
-        return "it apears, we have no submissions for this task."
+        return ""
 
     lst = ["success", "failed", "error"]
     return make_graph("pie", "subs_rep", lst, "repartition of best performance by student", data,
@@ -148,7 +148,7 @@ def best_user_perf(filename: str, task: str):
             data[2] += 1
     data[0] -= data[3]
     if data == [0, 0, 0, 0]:
-        return "it apears, we have no submissions for this task."
+        return ""
 
     lst = ["success", "failed", "error", "first try"]
     return make_graph("doughnut", "subs_rep2", lst, "repartition of all submissions result", data, fill_random=True)
@@ -165,7 +165,8 @@ def graph_submissions_repartition(filename: str, task: str):
     data = request(filename, "SELECT task, submitted_on from submissions WHERE task='{0}' "
                              "ORDER BY submitted_on".format(task))
     if not data:
-        return "It appears, we have no submissions for this task: {0}.".format(task)
+        return "<p style=\"color: #E99002\">It appears, we have no submissions " \
+               "for this task: {0}.</p>".format(task)
 
     for entry in data:
         days_lst.append(date_format(entry[1]))
@@ -179,6 +180,10 @@ def graph_submissions_repartition(filename: str, task: str):
 
 
 def inter_fun_y_axe(top_list):
+    """
+    :param top_list:
+    :return:
+    """
     top_list.reverse()
     x_axe = [0 for _ in range(len(top_list))]
     length = len(top_list)
