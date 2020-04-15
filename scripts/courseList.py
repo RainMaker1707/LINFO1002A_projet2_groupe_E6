@@ -1,5 +1,5 @@
-import sqlite3
 from scripts.functions import request
+import sqlite3
 
 
 def course_list(filename: str):

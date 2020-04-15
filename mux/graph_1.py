@@ -21,17 +21,10 @@ def graph_submissions_repartition(filename: str, task: str):
 		dates[entry[1][0:10].replace("-", "/")] = None
 
 	days_lst.sort()
-	dates_lst = date_dic_to_list(dates,days_lst[-1]-days_lst[0],days_lst[0])
+	dates_lst = date_dic_to_list(dates, days_lst[-1]-days_lst[0], days_lst[0])
 
-<<<<<<< Updated upstream
 	values = [0 for _ in range(len(dates_lst))]
 	for date in days_lst:
 		values[date-days_lst[0]-1] += 1
 
 	return make_graph("line", "subs_rep3", dates_lst, "Evolution of submissions over the task duration", values, True)
-=======
-	if data == [0, 0, 0]:
-		return "it apears, we have no submissions for this task."
-	else:
-		return make_graph("line", "subs_rep3", data[1], "Evolution of submissions over the task duration", values, True)
->>>>>>> Stashed changes

@@ -113,12 +113,10 @@ def student_perform_graph(filename: str, task: str):
             data[1] += 1
         else:
             data[2] += 1
-
     if data == [0, 0, 0]:
         return "it apears, we have no submissions for this task."
 
     lst = ["success", "failed", "error"]
-    
     return make_graph("pie", "subs_rep", lst, "repartition of best performance by student", data,
                       fixed=True, color_lst=['lime', 'red', 'orange'])
 
@@ -133,31 +131,46 @@ def best_user_perf(filename: str, task: str):
                                 " ORDER BY submitted_on ASC".format(task))
     users_results = {}
     data = [0, 0, 0, 0]
-
     for entry in entries:
         if entry[1] not in users_results:
             users_results[entry[1]] = entry[2]
             if entry[2] == 'success':
                 data[3] += 1
-
         elif users_results[entry[1]] == 'failed':
             users_results[entry[1]] = entry[2]
-
     for result in users_results.items():
         if result[1] == 'success':
             data[0] += 1
-
         elif result[1] == 'failed':
             data[1] += 1
-
         else:
             data[2] += 1
-
     data[0] -= data[3]
-
     if data == [0, 0, 0, 0]:
         return "it apears, we have no submissions for this task."
 
     lst = ["success", "failed", "error", "first try"]
-
     return make_graph("doughnut", "subs_rep2", lst, "repartition of all submissions result", data, fill_random=True)
+
+
+def graph_submissions_repartition(filename: str, task: str):
+    """
+    :param filename:
+    :param task:
+    :retun:
+    """
+    dates = dict()
+    days_lst = list()
+    data = request(filename, "SELECT task, submitted_on from submissions WHERE task='{0}' ORDER BY submitted_on".format(task))
+    if data:
+        return "It appears, we have no submissions for this task: {0}.".format(task)
+
+    for entry in data:
+        days_lst.append(date_format(entry[1]))
+        dates[entry[1][0:10].replace("-", "/")] = None
+    days_lst.sort()
+    dates_lst = date_dic_to_list(dates, days_lst[-1]-days_lst[0], days_lst[0])
+    values = [0 for _ in range(len(dates_lst))]
+    for date in days_lst:
+        values[date-days_lst[0]-1] += 1
+    return make_graph("line", "subs_rep3", dates_lst, "Evolution of submissions over the task duration", values, True)
