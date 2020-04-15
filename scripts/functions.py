@@ -61,15 +61,14 @@ def date_format(date: str):
     else:
         days += normal_months[int(date[5:7])-1]
     days += int(date[8:10])
-    days += int(date[2:4])*365
-
+    days += int(date[2:4]) * 365
     return days
 
 
 def date_dic_to_list(dic: dict, days: int, day_1: int):
     """
     :param dic: dictionary
-    :param days: the number of days between the first and laast entry
+    :param days: the number of days between the first and last entry
     :param day_1: date_format() of the first day
     :return: a list of all keys in the dic sorted with empty spaces for missing dates
     """

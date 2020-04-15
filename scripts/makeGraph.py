@@ -13,6 +13,7 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: l
     :param fill_random: to fill with random color
     :param fixed: if you want fixed colors you have to pass a list of these color in arg a nd set fixed at True
     :param color_lst: list of color you want in the graph
+           pattern : ["rgba(r: int, g: int, b: int, a: float(0,1)",...,"rgba(r: int, g: int, b: int, a: float(0,1)",]
     :param options: options you want to set in
     :return: the string part of the html code to plain the template
     """
