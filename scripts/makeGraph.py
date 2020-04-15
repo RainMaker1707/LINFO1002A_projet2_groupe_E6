@@ -162,7 +162,7 @@ def graph_submissions_repartition(filename: str, task: str):
     dates = dict()
     days_lst = list()
     data = request(filename, "SELECT task, submitted_on from submissions WHERE task='{0}' ORDER BY submitted_on".format(task))
-    if data:
+    if data == []:
         return "It appears, we have no submissions for this task: {0}.".format(task)
 
     for entry in data:
