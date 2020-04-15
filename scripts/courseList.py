@@ -46,6 +46,6 @@ def make_menu(filename: str):
         if task_lst:
             final_str += "</ul>\n</li>\n</div>\n"
     final_str += "</ul>\n</li>\n</ul>\n"
-    final_str += "<script>\n\t$(\".task\").click(function()"
+    final_str += "<script>\n\t$(\"nav ul li ul\").click(function()"
     final_str += "{\n\t$(this).toggleClass(\"active\");\t\n\t})\n;</script>"
     return final_str
