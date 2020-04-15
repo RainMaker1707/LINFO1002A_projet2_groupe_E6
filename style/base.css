@@ -41,6 +41,10 @@ nav ul li ul li:active > ul, nav ul li ul li:hover > ul{
     margin-right: 5px;
 }
 
+nav ul li ul li:hover > .dropButton{
+    transform: rotate(90deg);
+}
+
 
 nav ul li ul li ul{
     display: none;

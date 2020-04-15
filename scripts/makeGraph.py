@@ -218,10 +218,10 @@ def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, titl
     user: tuple
     for user in lst:
         for poss, score in enumerate(scores):
-            print(poss, score, user)
             if score == user[0]:
-                data.append(100/(poss+1))
+                data.append(1 - poss/1000)
                 break
         titles.append(user)
 
-    return make_graph(graph_type, graph_id, titles, title, data, True)
+    return make_graph(graph_type, graph_id, titles, title, data, True,
+                      options="scales: { xAxes: [{display: true}], yAxes: [{display: false}]}")
