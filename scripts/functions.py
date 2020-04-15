@@ -32,48 +32,8 @@ def get_random_colors(number: int):
     """
     lst = list()
     for i in range(number):
-        lst.append((randint(0, 250), randint(0, 250), randint(0, 250), 0.8))
+        lst.append((randint(0, 250), randint(50, 250), randint(50, 250), 0.8))
     return lst
-
-
-def get_colors(number: int):
-    """
-    """
-    increm = 255//(number//3)
-    num = number//3
-    if number % 3 != 0:
-        num += number%3
-    colors1 = []
-    colors2 = []
-    colors3 = []
-
-    red_g = 255
-    green_r = 0
-    green_b = 255
-    blue_g = 0
-    blue_r = 255
-    red_b = 0
-
-    for i in range(num):
-        #red/green
-        colors1.append((red_g,green_r,0,0.8))
-
-        red_g -= increm
-        green_r += increm
-
-        #green/blue
-        colors2.append((0,green_b,blue_g,0.8))
-
-        green_b -= increm
-        blue_g += increm
-
-        #blue/red
-        colors2.append((red_b,0,blue_r,0.8))
-
-        blue_r -= increm
-        red_b += increm
-    lst = colors1 + colors2 + colors3
-    return lst[0:number]
 
 
 def date_format(date: str):
@@ -106,3 +66,13 @@ def date_dic_to_list(dic: dict, days: int, day_1: int):
     for elem in dic:
         lst[date_format(elem)-day_1-1] = elem
     return lst
+
+def leap(year):
+    leap_flag = False
+    if year % 4 == 0:
+        leap_flag = True
+    if year % 100 == 0:
+        leap_flag = False
+    if year % 400 == 0:
+        leap_flag = True
+    return leap_flag
