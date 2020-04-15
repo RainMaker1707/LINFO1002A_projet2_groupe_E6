@@ -1,5 +1,3 @@
-import sqlite3
-
 def inter_fun_y_axe(top_list):
     top_list.reverse()
     x_axe = [0 for _ in range(len(top_list))]
@@ -18,11 +16,12 @@ def inter_fun_y_axe(top_list):
     return x_axe, lenght, lst
 
 
-def top_subs_count(filename: str, top_size: int, req: str, mirored=False):
+def top_subs_count(filename: str, top_size: int, req: str, title: str, mirored=False):
 	"""
 	:param filename:
 	:param top_size:
 	:param req: the sql request of 2 or 3 elements
+	:param title: the title of the graph on the page
 	:param mirored: True = top worst, False = top best
 	:return: 
 	"""
@@ -48,7 +47,7 @@ def top_subs_count(filename: str, top_size: int, req: str, mirored=False):
 		else:
 			titles.append((user[0],user[1]))
 
-	return make_graph("bar","top_subs_1",titles,"TITLE",data,True)
+	return make_graph("bar","top_subs_1",titles,title,data,True)
 
 #"SELECT SUM(tried), course, username  FROM user_tasks GROUP BY username, course"
 #"SELECT SUM(tried), task, username FROM user_tasks GROUP BY username, task"
