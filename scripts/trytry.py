@@ -12,12 +12,14 @@ def inter_fun_y_axe(top_list):
     return x_axe
 
 
-temp = ['a', 'b', 'c']
-lst = list()
-for i in range(len(temp)):
-    lst.append((i, temp[i]))
-lst.sort()
-print(lst)
-temp = inter_fun_y_axe(lst)
-print(temp)
+def leap(year):
+    leap_flag = False
+    if year % 4 == 0:
+        leap_flag = True
+    if year % 100 == 0:
+        leap_flag = False
+    if year % 400 == 0:
+        leap_flag = True
+    return leap_flag
+
 
