@@ -16,9 +16,6 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: l
     :param options: options you want to set in
     :return: the string part of the html code to plain the template
     """
-    # if len(data) != len(labels):
-    #    return "ERROR data and labels must have the same len\n"
-
     canvas = "<canvas id=\"{0}\">\n<script>\nvar ctx = document.getElementById('{0}')".format(graph_id)
     canvas += ".getContext('2d');\n"
     canvas += "var myChart = new Chart(ctx, {\n"
@@ -39,7 +36,11 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: l
         canvas += "],\n\t"
     canvas += "data: {0}\n#2]\n#2,\n".format(data)
     if options:
-        canvas += "options: #1\n{0}\n#2\n".format(options)
+        canvas += "options: #1\ntitle: #1\ndisplay: true,\n text: '{0}'\n#2,\nlegend: #1 position: 'bottom'#2," \
+                  " {1}\n#2\n".format(title, options)
+    else:
+        canvas += "options: #1\ntitle: #1\ndisplay: true,\n text: '{0}'\n#2,\nlegend: #1 position: 'bottom'" \
+                  "#2#2\n".format(title)
     canvas += "#2);\n</script>\n</canvas>"
     canvas = canvas.replace('#1', '{')
     canvas = canvas.replace('#2', '}')
@@ -161,8 +162,9 @@ def graph_submissions_repartition(filename: str, task: str):
     """
     dates = dict()
     days_lst = list()
-    data = request(filename, "SELECT task, submitted_on from submissions WHERE task='{0}' ORDER BY submitted_on".format(task))
-    if data == []:
+    data = request(filename, "SELECT task, submitted_on from submissions WHERE task='{0}' "
+                             "ORDER BY submitted_on".format(task))
+    if not data:
         return "It appears, we have no submissions for this task: {0}.".format(task)
 
     for entry in data:
