@@ -176,3 +176,52 @@ def graph_submissions_repartition(filename: str, task: str):
     for date in days_lst:
         values[date-days_lst[0]-1] += 1
     return make_graph("line", "subs_rep3", dates_lst, "Evolution of submissions over the task duration", values, True)
+
+
+def inter_fun_y_axe(top_list):
+    top_list.reverse()
+    x_axe = [0 for _ in range(len(top_list))]
+    length = len(top_list)
+    lst = []
+    for i in range(len(top_list)):
+        if i % 2 == 0:
+            x_axe[int(i / 2)] = top_list[i]
+        else:
+            x_axe[- int(i / 2 + 0.5)] = top_list[i]
+        if i > 0 and top_list[i][0] == top_list[i - 1][0]:
+            length -= 1
+        else:
+            lst.append(top_list[i][0])
+    lst.reverse()
+    return x_axe, length, lst
+
+
+def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, title: str, graph_id: str, mirrored=False):
+    """
+    :param filename:
+    :param top_size:
+    :param graph_type:
+    :param graph_id:
+    :param req: the sql request of 2 or 3 elements
+    :param title: the title of the graph on the page
+    :param mirrored: True = top worst, False = top best
+    :return:
+    """
+    data = request(filename, req)
+    if mirrored:
+        data.sort(reverse=True)
+    else:
+        data.sort()
+    lst, length, scores = inter_fun_y_axe(data[0:top_size])
+    data = []
+    titles = []
+    user: tuple
+    for user in lst:
+        for poss, score in enumerate(scores):
+            print(poss, score, user)
+            if score == user[0]:
+                data.append(100/(poss+1))
+                break
+        titles.append(user)
+
+    return make_graph(graph_type, graph_id, titles, title, data, True)
