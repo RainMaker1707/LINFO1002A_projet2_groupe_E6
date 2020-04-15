@@ -49,6 +49,6 @@ def top_subs_count(filename: str, top_size: int, req: str, title: str, mirored=F
 
 	return make_graph("bar","top_subs_1",titles,title,data,True)
 
-#"SELECT SUM(tried), course, username  FROM user_tasks GROUP BY username, course"
-#"SELECT SUM(tried), task, username FROM user_tasks GROUP BY username, task"
-#"SELECT SUM(tried), username FROM user_tasks GROUP BY username"
+#1#"SELECT SUM(tried), username FROM user_tasks GROUP BY username"
+#2#"SELECT SUM(tried), course, username  FROM user_tasks GROUP BY username, course"
+#3#"SELECT SUM(tried), task, username FROM user_tasks GROUP BY username, task WHERE task='{0}'".format(#course#)
