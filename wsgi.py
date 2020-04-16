@@ -32,6 +32,12 @@ def home():
 @app.route('/course/<course>')
 def course_page(course: str):
     db = "scripts/DataBase/inginious.sqlite"
+    course_lst = course_list(db)
+    if course not in course_lst:
+        return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
+                               PATH="\t<a href=\"/\">  Statistics  </a>|  COURSE NOT FOUND",
+                               GRAPH3="ERROR 404 course not found")
+
     course = request(db, "SELECT DISTINCT(course) FROM user_tasks WHERE course LIKE \"{0}%\"".format(course))[0][0]
     req_fail = "SELECT DISTINCT(task), COUNT(result) FROM submissions WHERE course='{0}' GROUP BY task".format(course)
     req_success = "SELECT DISTINCT(task), COUNT(result) FROM submissions " \
@@ -50,6 +56,19 @@ def course_page(course: str):
 @app.route('/course/<course>/<task>')
 def task_page(course: str, task: str):
     db = "scripts/DataBase/inginious.sqlite"
+    print(course)
+    print(task)
+    if course not in course_list(db):
+        return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
+                               PATH="\t<a href=\"/\">  Statistics  </a>| COURSE NOT FOUND",
+                               GRAPH3="<p>ERROR 404 course not found</p>")
+
+    if task not in tasks_list(db, course):
+        return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
+                               PATH="\t<a href=\"/\">  Statistics  </a>|  <a href=\"/course/{0}\">{0} </a> |"
+                                    " TASK NOT FOUND".format(course),
+                               GRAPH3="<p>ERROR 404 task not found</p>")
+
     return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
                            PATH="\t<a href=\"/\">  Statistics  </a>|<a href=\"/course/{0}\">  {0}  "
                                 "</a>|<a href=\"/course/{0}/{1}\">  {1}  </a>".format(

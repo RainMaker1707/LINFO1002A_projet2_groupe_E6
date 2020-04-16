@@ -4,7 +4,7 @@ from scripts.functions import *
 def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: list, fill_random=False,
                options: str = None, fixed=False, color_lst=None):
     """
-    Function which return a canvas with the chart.js script set with the following datas
+    Function which return a canvas with the chart.js script set with the following data
     :param graph_type: type of the graph ( bar, line, doughnut, pie, etc)
     :param graph_id: canvas id to link the css part of base.css to the graph container
     :param labels: list of the labels on the X axes for the typical graph or name of part in doughnut/pie graph
@@ -13,7 +13,7 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: l
     :param fill_random: to fill with random color
     :param fixed: if you want fixed colors you have to pass a list of these color in arg a nd set fixed at True
     :param color_lst: list of color you want in the graph
-           pattern : ["rgba(r: int, g: int, b: int, a: float(0,1)",...,"rgba(r: int, g: int, b: int, a: float(0,1)",]
+           pattern : ["rgba(r: int, g: int, b: int, a: float(0,1)",...,"rgba(r: int, g: int, b: int, a: float(0,1)"]
     :param options: options you want to set in
     :return: the string part of the html code to plain the template
     """
@@ -33,7 +33,6 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: l
         canvas += "\tfill: true,\n\tbackgroundColor : {0},\n".format(color_lst)
     elif fill_random:
         canvas += "\tfill : true,\n\tbackgroundColor: [\n\t\t"
-
         if graph_type == "line":
             lst = get_random_colors(1)
             for i in range(len(data)):
