@@ -37,7 +37,7 @@ def course_page(course: str):
     if course not in course_lst:
         return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
                                PATH="\t<a href=\"/\">  Statistics  </a>|  COURSE NOT FOUND",
-                               GRAPH3="ERROR 404 course not found")
+                               GRAPH3="<p>ERROR 404 course not found</p>")
 
     course = request(db, "SELECT DISTINCT(course) FROM user_tasks WHERE course LIKE \"{0}%\"".format(course))[0][0]
     req_fail = "SELECT DISTINCT(task), COUNT(result) FROM submissions WHERE course='{0}' GROUP BY task".format(course)
