@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for
 from scripts.courseList import *
 from scripts.makeGraph import *
+
 app = Flask(__name__, template_folder='templates', static_folder='style')
 
 
