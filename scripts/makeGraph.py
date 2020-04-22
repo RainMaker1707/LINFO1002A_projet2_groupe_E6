@@ -20,13 +20,6 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: l
     canvas = "<canvas id=\"{0}\">\n<script>\nvar ctx = document.getElementById('{0}')".format(graph_id)
     canvas += ".getContext('2d');\n"
 
-    #rainbow gradiant
-    canvas += "var gradientStroke = ctx.createLinearGradient(0, 0, 2000, 0);\n"
-    canvas += "gradientStroke.addColorStop(0, \'rgba(255, 0, 0, 0.6)\');\ngradientStroke.addColorStop(0.16, \'rgba(255, 255, 0, 0.6)\');\n"
-    canvas += "gradientStroke.addColorStop(0.32, \'rgba(0, 255, 0, 0.6)\');\ngradientStroke.addColorStop(0.5, \'rgba(0, 255, 255, 0.6)\');\n"
-    canvas += "gradientStroke.addColorStop(0.66, \'rgba(0, 0, 255, 0.6)\');\ngradientStroke.addColorStop(0.82, \'rgba(255, 0, 255, 0.6)\');\n"
-    canvas += "gradientStroke.addColorStop(1, \'rgba(255, 0, 0, 0.6)\');\n"
-
     canvas += "var myChart = new Chart(ctx, {\n"
     canvas += "type:'{0}',\ndata: #1\nlabels: {1},\ndatasets: [#1\n\tlabel: '{2}',\n".format(graph_type, labels, title)
     if fixed and color_lst:
@@ -42,8 +35,6 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: l
             for i in range(len(lst)):
                 canvas += "\"rgba{0}\",\n\t\t".format(lst[i])
         canvas += "],\n\t"
-    else:
-        canvas += "\tfill: true,\n\tbackgroundColor : gradientStroke,\n"
 
     canvas += "data: {0}\n#2]\n#2,\n".format(data)
     if options:
@@ -130,7 +121,7 @@ def student_perform_graph(filename: str, task: str):
 
     lst = ["success", "failed", "error"]
     return make_graph("pie", "subs_rep", lst, "repartition of best performance by student", data,
-                      fixed=True, color_lst=['rgba(0,255,0,0.8)', 'rgba(255,0,0,0.8)', 'rgba(200,50,0,0.8)'])
+                      fixed=True, color_lst=['rgba(0, 255, 0, 0.85)', 'rgba(255, 0, 0, 0.85)', 'rgba(255, 115, 0, 0.85)'])
 
 
 def best_user_perf(filename: str, task: str):
@@ -228,7 +219,7 @@ def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, titl
         datas.sort(reverse=True)
     else:
         datas.sort()
-    if podium == True:
+    if podium:
         lst, length, scores = inter_fun_y_axe(datas[0:top_size])
 
         data = []

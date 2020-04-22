@@ -32,7 +32,7 @@ def get_random_colors(number: int):
     """
     lst = list()
     for i in range(number):
-        lst.append((randint(0, 250), randint(50, 250), randint(50, 250), 0.8))
+        lst.append((randint(30, 250), randint(0, 250), randint(0, 250), 0.8))
     return lst
 
 
@@ -68,6 +68,7 @@ def date_dic_to_list(dic: dict, days: int, day_1: int):
     for elem in dic:
         lst[date_format(elem)-day_1-1] = elem
     return lst
+
 
 def leap(year):
     leap_flag = False
