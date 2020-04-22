@@ -61,6 +61,9 @@ def date_dic_to_list(dic: dict, days: int, day_1: int):
     :param day_1: date_format() of the first day
     :return: a list of all keys in the dic sorted with empty spaces for missing dates
     """
+    if len(dic) == 1:
+    	for elem in dic:
+    		return [date_format(elem)]
     lst = ["" for _ in range(days)]
     for elem in dic:
         lst[date_format(elem)-day_1-1] = elem
