@@ -37,7 +37,7 @@ def course_page(course: str):
     if course not in course_lst:
         return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
                                PATH="\t<a href=\"/\">  Statistics  </a>|  COURSE NOT FOUND",
-                               GRAPH3="<p>ERROR 404 course not found</p>")
+                               GRAPH3="<p style=\"color: #E99002\">ERROR 404 course not found</p>")
 
     course = request(db, "SELECT DISTINCT(course) FROM user_tasks WHERE course LIKE \"{0}%\"".format(course))[0][0]
     req_fail = "SELECT DISTINCT(task), COUNT(result) FROM submissions WHERE course='{0}' GROUP BY task".format(course)
@@ -62,13 +62,13 @@ def task_page(course: str, task: str):
     if course not in course_list(db):
         return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
                                PATH="\t<a href=\"/\">  Statistics  </a>| COURSE NOT FOUND",
-                               GRAPH3="<p>ERROR 404 course not found</p>")
+                               GRAPH3="<p style=\"color: #E99002\">ERROR 404 course not found</p>")
 
     if task not in tasks_list(db, course):
         return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
                                PATH="\t<a href=\"/\">  Statistics  </a>|  <a href=\"/course/{0}\">{0} </a> |"
                                     " TASK NOT FOUND".format(course),
-                               GRAPH3="<p>ERROR 404 task not found</p>")
+                               GRAPH3="<p style=\"color: #E99002\">ERROR 404 task not found</p>")
 
     return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
                            PATH="\t<a href=\"/\">  Statistics  </a>|<a href=\"/course/{0}\">  {0}  "
