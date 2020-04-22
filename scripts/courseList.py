@@ -25,6 +25,8 @@ def tasks_list(filename: str, course: str):
                     "SELECT distinct(task) FROM user_tasks WHERE course LIKE '{0}%' GROUP BY task".format(course))
     for i in range(len(tasks)):
         tasks[i] = tasks[i][0]
+        tasks[i] = tasks[i].replace('""', "_")
+        tasks[i] = tasks[i].replace('"', "")
     return tasks
 
 
