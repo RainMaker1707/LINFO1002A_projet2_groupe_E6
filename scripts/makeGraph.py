@@ -97,7 +97,7 @@ def graph_total_sub(filename: str):
         else:
             x_axe.append(lst[i][0])
         y_axe.append(lst[i][1])
-    return make_graph('pie', 'total_sub', x_axe, "Total submissions", y_axe, True)
+    return make_graph('pie', 'total_sub', x_axe, "Total submissions", y_axe, fixed=True, color_lst=get_colors(len(y_axe)))
 
 
 def student_perform_graph(filename: str, task: str):
@@ -120,7 +120,7 @@ def student_perform_graph(filename: str, task: str):
         return ""
 
     lst = ["success", "failed", "error"]
-    return make_graph("pie", "subs_rep", lst, "repartition of best performance by student", data,
+    return make_graph("pie", "subs_rep", lst, "repartition of all submissions result", data,
                       fixed=True, color_lst=['rgba(0, 255, 0, 0.85)', 'rgba(255, 0, 0, 0.85)', 'rgba(255, 115, 0, 0.85)'])
 
 
@@ -153,7 +153,7 @@ def best_user_perf(filename: str, task: str):
         return ""
 
     lst = ["success", "failed", "error", "first try"]
-    return make_graph("doughnut", "subs_rep2", lst, "repartition of all submissions result", data, fill_random=True)
+    return make_graph("doughnut", "subs_rep2", lst, "repartition of best performance by student", data, fixed=True, color_lst=get_colors(4))
 
 
 def graph_submissions_repartition(filename: str, task: str):
@@ -246,5 +246,5 @@ def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, titl
             else:
                 titles.append(entry[1])
 
-    return make_graph(graph_type, graph_id, titles, title, data, True,
+    return make_graph(graph_type, graph_id, titles, title, data, fixed=True, color_lst=get_colors(len(data)),
                       options="scales: { xAxes: [{display: true}], yAxes: [{display: false}]}")

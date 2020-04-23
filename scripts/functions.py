@@ -1,4 +1,5 @@
 from random import randint
+from math import sqrt
 import sqlite3
 
 
@@ -16,15 +17,6 @@ def request(filename: str, req: str):
     return lst
 
 
-def format_request_where(req: str, where_arg: str):
-    """
-    :param req: SQL request to format
-    :param where_arg: arg to set at WHERE="where_arg"
-    :return: str: a clean SQL request with set WHERE
-    """
-    return req.replace("WHERE ", "WHERE {0}".format(where_arg))
-
-
 def get_random_colors(number: int):
     """
     :param number: number of tuple
@@ -36,11 +28,30 @@ def get_random_colors(number: int):
     return lst
 
 
+def get_colors(number: int, *base_color: int):
+	"""
+	:param number: number of tuple > 0
+	:param base_color: int between 0 and 360
+	:return: a list o string "hsl(x, xx%, xx%)"
+	"""
+	step = 60/number
+
+	if not base_color:
+		fist = randint(0,360)
+
+	lst = []
+	for i in range(number):
+		lst.append("hsl({0}, 90%, {1}%)".format(fist, 20+i*step))
+
+	return lst[:number]
+
+
+			
+
 def date_format(date: str):
     """
     :param date: string 'yyyy-mm-dd'...
-    :return: int number of days
-    only works for dates from 2000
+    :return: int number of days sice year 0
     """
     days = 0
     leap_months = [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335]
@@ -50,15 +61,21 @@ def date_format(date: str):
     else:
         days += normal_months[int(date[5:7])-1]
     days += int(date[8:10])
-    days += int(date[2:4]) * 365
+    days += int(date[2:4]) * 365 + leap_years(int(date[2:4]))
     return days
+
+
+def leap_years(year: int):
+	"""
+	"""
+	return year//4 - year//100 + year//400
 
 
 def date_dic_to_list(dic: dict, days: int, day_1: int):
     """
-    :param dic: dictionary
+    :param dic: dictionary with the keys as dates yyyy/mm/dd
     :param days: the number of days between the first and last entry
-    :param day_1: date_format() of the first day
+    :param day_1: date_format() of the first day (in chronologic order)
     :return: a list of all keys in the dic sorted with empty spaces for missing dates
     """
     if len(dic) == 1:

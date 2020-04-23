@@ -22,7 +22,7 @@ def home():
                                                  "SELECT SUM(tried), username FROM user_tasks GROUP BY username",
                                                  "Podium of student with smallest submissions numbers",
                                                  "graph3", False),
-                           GRAPH4=top_subs_count(db, 100, "line",
+                           GRAPH4=top_subs_count(db, 50, "bar",
                                                  "SELECT SUM(tried), course, username  FROM user_tasks "
                                                  "GROUP BY username, course",
                                                  "Podium of student with highest submissions numbers per course",
@@ -47,7 +47,7 @@ def course_page(course: str):
                            PATH="\t<a href=\"/\">  Statistics  </a>|"
                                 "<a href=\"/course/{0}\">  {0}  </a>\t".format(course),
                            GRAPH3=double_bar_graph(db, req_fail, req_success),
-                           GRAPH4=top_subs_count(db, 100, "line",
+                           GRAPH4=top_subs_count(db, 50, "bar",
                                                  "SELECT SUM(tried), task, username FROM user_tasks "
                                                  "WHERE course='{0}' GROUP BY username, task ".format(course),
                                                  "Podium of student with highest submissions numbers per task",
