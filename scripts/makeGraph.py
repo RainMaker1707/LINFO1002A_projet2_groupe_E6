@@ -1,42 +1,67 @@
 from scripts.functions import *
 
 
-def make_graph(graph_type: str, graph_id: str, labels: list, title: str, data: list, fill_random=False,
-               options: str = None, fixed=False, color_lst=None):
+def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
+               options=None, color_lst=None, legend=None):
     """
     Function which return a canvas with the chart.js script set with the following data
     :param graph_type: type of the graph ( bar, line, doughnut, pie, etc)
     :param graph_id: canvas id to link the css part of base.css to the graph container
     :param labels: list of the labels on the X axes for the typical graph or name of part in doughnut/pie graph
-    :param title: title of the graph when is axes graph
-    :param data: data for y axe graph or part of pie/doughnut
-    :param fill_random: to fill with random color
-    :param fixed: if you want fixed colors you have to pass a list of these color in arg a nd set fixed at True
-    :param color_lst: list of color you want in the graph
+    :param title: string or list (if multiple datasetd) coresponding to the legend
+    :param data: list of y value or part of pie/doughnut, list of list if multiple datasets
+    :param color_lst: list of color you want in the graph, list of list if multiple datasets
            pattern : ["rgba(r: int, g: int, b: int, a: float(0,1)",...,"rgba(r: int, g: int, b: int, a: float(0,1)"]
+           if not given colors are chosen randomly
     :param options: options you want to set in
     :return: the string part of the html code to plain the template
     """
     canvas = "<canvas id=\"{0}\">\n<script>\nvar ctx = document.getElementById('{0}')".format(graph_id)
     canvas += ".getContext('2d');\n"
-
     canvas += "var myChart = new Chart(ctx, {\n"
-    canvas += "type:'{0}',\ndata: #1\nlabels: {1},\ndatasets: [#1\n\tlabel: '{2}',\n".format(graph_type, labels, title)
-    if fixed and color_lst:
-        canvas += "\tfill: true,\n\tbackgroundColor : {0},\n".format(color_lst)
-    elif fill_random:
-        canvas += "\tfill : true,\n\tbackgroundColor: [\n\t\t"
-        if graph_type == "line":
-            lst = get_random_colors(1)
-            for i in range(len(data)):
-                canvas += "\"rgba{0}\",\n\t\t".format(lst[0])
-        else:
-            lst = get_random_colors(len(labels))
-            for i in range(len(lst)):
-                canvas += "\"rgba{0}\",\n\t\t".format(lst[i])
-        canvas += "],\n\t"
+    canvas += "type:'{0}',\ndata: #1\nlabels: {1},\ndatasets: [#1".format(graph_type, labels)
 
-    canvas += "data: {0}\n#2]\n#2,\n".format(data)
+    if legend:
+        if isinstance(legend,str):
+            tmp = []
+            tmp.append(legend)
+            legend = tmp
+    if data[0] is not list:
+        tmp = []
+        tmp.append(data)
+        data = tmp
+    if color_lst:
+        if color_lst[0] is not list:
+            tmp = []
+            tmp.append(color_lst)
+            color_lst = tmp
+
+    #add datasets
+    for i in range(len(data)):
+        #label
+        if legend:
+            canvas += "\n\tlabel: '{0}',\n".format(legend[i])
+        #colors
+        if color_lst:
+            canvas += "\tfill: true,\n\tbackgroundColor : {0},\n".format(color_lst[i])
+        else:
+            canvas += "\tfill : true,\n\tbackgroundColor: [\n\t\t"
+            if graph_type == "line":
+                lst = get_random_colors(1)
+                for _ in range(len(data[i])):
+                    canvas += "\"rgba{0}\",\n\t\t".format(lst[0])
+            else:
+                lst = get_random_colors(len(labels))
+                for j in range(len(lst)):
+                    canvas += "\"rgba{0}\",\n\t\t".format(lst[j])
+            canvas += "],\n\t"
+        #data
+        canvas += "data: {0}\n".format(data[i])
+        if i > len(data)-1:
+            canvas += "\t\t}, {\n"
+
+    canvas += "#2]\n#2,\n"
+
     if options:
         canvas += "options: #1\ntitle: #1\ndisplay: true,\n text: '{0}'\n#2,\nlegend: #1 position: 'bottom'#2," \
                   " {1}\n#2\n".format(title, options)
@@ -97,7 +122,7 @@ def graph_total_sub(filename: str):
         else:
             x_axe.append(lst[i][0])
         y_axe.append(lst[i][1])
-    return make_graph('pie', 'total_sub', x_axe, "Total submissions", y_axe, fixed=True, color_lst=get_colors(len(y_axe)))
+    return make_graph('pie', 'total_sub', x_axe, "Total submissions", y_axe, color_lst=get_colors(len(y_axe)))
 
 
 def student_perform_graph(filename: str, task: str):
@@ -121,7 +146,7 @@ def student_perform_graph(filename: str, task: str):
 
     lst = ["success", "failed", "error"]
     return make_graph("pie", "subs_rep", lst, "repartition of all submissions result", data,
-                      fixed=True, color_lst=['rgba(0, 255, 0, 0.85)', 'rgba(255, 0, 0, 0.85)', 'rgba(255, 115, 0, 0.85)'])
+                    color_lst=['rgba(0, 255, 0, 0.85)', 'rgba(255, 0, 0, 0.85)', 'rgba(255, 115, 0, 0.85)'])
 
 
 def best_user_perf(filename: str, task: str):
@@ -153,7 +178,7 @@ def best_user_perf(filename: str, task: str):
         return ""
 
     lst = ["success", "failed", "error", "first try"]
-    return make_graph("doughnut", "subs_rep2", lst, "repartition of best performance by student", data, fixed=True, color_lst=get_colors(4))
+    return make_graph("doughnut", "subs_rep2", lst, "repartition of best performance by student", data, color_lst=get_colors(4))
 
 
 def graph_submissions_repartition(filename: str, task: str):
@@ -178,7 +203,7 @@ def graph_submissions_repartition(filename: str, task: str):
     values = [0 for _ in range(len(dates_lst))]
     for date in days_lst:
         values[date-days_lst[0]-1] += 1
-    return make_graph("line", "subs_rep3", dates_lst, "Evolution of submissions over the task duration", values, True)
+    return make_graph("line", "subs_rep3", dates_lst, "Evolution of submissions over the task duration", values, legend="submissions count")
 
 
 def inter_fun_y_axe(top_list):
@@ -246,5 +271,6 @@ def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, titl
             else:
                 titles.append(entry[1])
 
-    return make_graph(graph_type, graph_id, titles, title, data, fixed=True, color_lst=get_colors(len(data)),
-                      options="scales: { xAxes: [{display: true}], yAxes: [{display: false}]}")
+    return make_graph(graph_type, graph_id, titles, title, data, legend="submissions count",
+                      options="scales: #1 xAxes: [#1display: true#2], yAxes: [#1display: false#2]#2".replace("#1","{").replace("#2","}"), color_lst=get_colors(len(data)))
+                      
