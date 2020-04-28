@@ -287,5 +287,23 @@ def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, titl
         colors.reverse()
 
     return make_graph(graph_type, graph_id, titles, title, data, legend="submissions count",
-                      options="scales: #1 xAxes: [#1display: true#2], yAxes: [#1display: false#2]#2".replace("#1","{").replace("#2","}"), color_lst=get_colors(len(data)))
-                      
+                      options="scales: #1 xAxes: [#1display: true#2], yAxes: [#1display: "
+                              "false#2]#2".replace("#1", "{").replace("#2", "}"), color_lst=colors)
+
+
+def graph_error_repartition(filename: str, task: str):
+    total = request(filename, "SELECT COUNT(result) FROM submissions WHERE task=\"{0}\"".format(task))[0][0]
+    if total == 0:
+        return ""
+    temp = request(filename, "SELECT result FROM submissions GROUP BY result")
+    labels = list()
+    for i in temp:
+        if i[0] is not None and i[0] != "success" and i[0] != "failed":
+            labels.append(i[0])
+    data = list()
+    for i in labels:
+        data.append(request(filename, "SELECT COUNT(result) FROM submissions WHERE result=\"{0}\" "
+                                "AND task LIKE \"%{1}%\"".format(i, task[:4]))[0][0])
+
+    return make_graph("radar", "error_repartition", labels, "repartition of all errors for the task", data,
+                      options="legend: {display: false}")

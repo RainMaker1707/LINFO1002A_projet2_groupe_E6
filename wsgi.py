@@ -23,7 +23,7 @@ def home():
                                                  "Podium of student with smallest submissions numbers",
                                                  "graph3", False),
                            GRAPH4=top_subs_count(db, 50, "bar",
-                                                 "SELECT SUM(tried), course, username  FROM user_tasks "
+                                                 "SELECT SUM(tried), course, username FROM user_tasks "
                                                  "GROUP BY username, course",
                                                  "Podium of student with highest submissions numbers per course",
                                                  "graph4", True),
@@ -76,4 +76,5 @@ def task_page(course: str, task: str):
                                course, task),
                            GRAPH1=student_perform_graph(db, task),
                            GRAPH2=best_user_perf(db, task),
-                           GRAPH3=graph_submissions_repartition(db, task))
+                           GRAPH3=graph_submissions_repartition(db, task),
+                           GRAPH4=graph_error_repartition(db,task))
