@@ -2,18 +2,20 @@ from scripts.functions import *
 
 
 def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
-               options=None, color_lst=None, legend=None):
+               options=None, color_lst=None, legend=None, hide_datasets=None):
     """
     Function which return a canvas with the chart.js script set with the following data
     :param graph_type: type of the graph ( bar, line, doughnut, pie, etc)
     :param graph_id: canvas id to link the css part of base.css to the graph container
     :param labels: list of the labels on the X axes for the typical graph or name of part in doughnut/pie graph
-    :param title: string or list (if multiple datasetd) coresponding to the legend
+    :param title: string, title of the graph
     :param data: list of y value or part of pie/doughnut, list of list if multiple datasets
     :param color_lst: list of color you want in the graph, list of list if multiple datasets
            pattern : ["rgba(r: int, g: int, b: int, a: float(0,1)",...,"rgba(r: int, g: int, b: int, a: float(0,1)"]
            if not given colors are chosen randomly
+    :param legend: string or list on datsets label
     :param options: options you want to set in
+    :param hide_datasets: list of dataset index to hide on load
     :return: the string part of the html code to plain the template
     """
     canvas = "<canvas id=\"{0}\">\n<script>\nvar ctx = document.getElementById('{0}')".format(graph_id)
@@ -22,31 +24,39 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
     canvas += "type:'{0}',\ndata: #1\nlabels: {1},\ndatasets: [#1".format(graph_type, labels)
 
     if legend:
-        if isinstance(legend,str):
-            tmp = []
+        if isinstance(legend, str):
+            tmp = list()
             tmp.append(legend)
             legend = tmp
-    if data[0] is not list:
-        tmp = []
+        if len(data) != len(legend):
+            return "the number of datasets does not match between data and legend"
+
+    if not isinstance(data[0], list):
+        tmp = list()
         tmp.append(data)
         data = tmp
     if color_lst:
-        if color_lst[0] is not list:
-            tmp = []
+        if not isinstance(color_lst[0], list) and graph_type != "line":
+            tmp = list()
             tmp.append(color_lst)
             color_lst = tmp
 
-    #add datasets
+    # add datasets
     for i in range(len(data)):
-        #label
+        # label
         if legend:
             canvas += "\n\tlabel: '{0}',\n".format(legend[i])
-        #colors
+        # hide
+        if hide_datasets:
+            if i in hide_datasets:
+                canvas += "\thidden: true,\n"
+
+        # colors
         if color_lst:
             canvas += "\tfill: true,\n\tbackgroundColor : {0},\n".format(color_lst[i])
         else:
             canvas += "\tfill : true,\n\tbackgroundColor: [\n\t\t"
-            if graph_type == "line":
+            if graph_type == "line" or graph_type == "radar":
                 lst = get_random_colors(1)
                 for _ in range(len(data[i])):
                     canvas += "\"rgba{0}\",\n\t\t".format(lst[0])
@@ -55,9 +65,9 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
                 for j in range(len(lst)):
                     canvas += "\"rgba{0}\",\n\t\t".format(lst[j])
             canvas += "],\n\t"
-        #data
+        # data
         canvas += "data: {0}\n".format(data[i])
-        if i > len(data)-1:
+        if i < len(data)-1:
             canvas += "\t\t}, {\n"
 
     canvas += "#2]\n#2,\n"
@@ -144,9 +154,9 @@ def student_perform_graph(filename: str, task: str):
     if data == [0, 0, 0]:
         return ""
 
-    lst = ["success", "failed", "error"]
+    lst = ["success", "failed", "errors"]
     return make_graph("pie", "subs_rep", lst, "repartition of all submissions result", data,
-                    color_lst=['rgba(0, 255, 0, 0.85)', 'rgba(255, 0, 0, 0.85)', 'rgba(255, 115, 0, 0.85)'])
+                      color_lst=['rgba(0, 255, 0, 0.85)', 'rgba(255, 0, 0, 0.85)', 'rgba(255, 115, 0, 0.85)'])
 
 
 def best_user_perf(filename: str, task: str):
@@ -189,21 +199,36 @@ def graph_submissions_repartition(filename: str, task: str):
     """
     dates = dict()
     days_lst = list()
-    data = request(filename, "SELECT task, submitted_on from submissions WHERE task='{0}' "
+    data = request(filename, "SELECT task, submitted_on, result from submissions WHERE task='{0}' "
                              "ORDER BY submitted_on".format(task))
     if not data:
         return "<p style=\"color: #E99002\">It appears, we have no submissions " \
                "for this task: {0}.</p>".format(task)
 
     for entry in data:
-        days_lst.append(date_format(entry[1]))
+        days_lst.append((date_format(entry[1]), entry[2]))
         dates[entry[1][0:10].replace("-", "/")] = None
-    days_lst.sort()
-    dates_lst = date_dic_to_list(dates, days_lst[-1]-days_lst[0], days_lst[0])
+
+    dates_lst = date_dic_to_list(dates, days_lst[-1][0]-days_lst[0][0], days_lst[0][0])
     values = [0 for _ in range(len(dates_lst))]
+    values_succes = [0 for _ in range(len(dates_lst))]
+    values_error = [0 for _ in range(len(dates_lst))]
+
     for date in days_lst:
-        values[date-days_lst[0]-1] += 1
-    return make_graph("line", "subs_rep3", dates_lst, "Evolution of submissions over the task duration", values, legend="submissions count")
+        values[date[0]-days_lst[0][0]-1] += 1
+        if date[1] == "success":
+            values_succes[date[0]-days_lst[0][0]-1] += 1
+        elif date[1] != "failed":
+            values_error[date[0]-days_lst[0][0]-1] += 1
+
+    tmp = get_colors(3)
+    colors = list()
+    for i in reversed(tmp):
+        colors.append("\""+i+"\"")
+
+    return make_graph("line", "subs_rep3", dates_lst, "Evolution of submissions over the task duration",
+                      [values, values_succes, values_error], legend=["submissions", "success", "errors"],
+                      color_lst=colors, hide_datasets=[2])
 
 
 def inter_fun_y_axe(top_list):
@@ -228,7 +253,8 @@ def inter_fun_y_axe(top_list):
     return x_axe, length, lst
 
 
-def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, title: str, graph_id: str, mirrored=False, podium=False):
+def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, title: str,
+                   graph_id: str, mirrored=False):
     """
     :param filename:
     :param top_size:
@@ -237,39 +263,28 @@ def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, titl
     :param req: the sql request of 2 or 3 elements
     :param title: the title of the graph on the page
     :param mirrored: True = top worst, False = top best
-    :return:
     """
-    datas = request(filename, req)
+    data_list = request(filename, req)
     if mirrored:
-        datas.sort(reverse=True)
+        data_list.sort(reverse=True)
     else:
-        datas.sort()
-    if podium:
-        lst, length, scores = inter_fun_y_axe(datas[0:top_size])
+        data_list.sort()
+   
+    data_list = data_list[0:top_size]
+    data = []
+    titles = []
+    for entry in data_list:
+        data.append(entry[0])
+        if len(entry) > 2:
+            titles.append(entry[2]+" ("+entry[1]+")")
+        else:
+            titles.append(entry[1])
 
-        data = []
-        titles = []
-        user: tuple
-        for user in lst:
-            for poss, score in enumerate(scores):
-                if score == user[0]:
-                    data.append(1 - poss/1000)
-                    break
-            if len(user) > 2:
-                titles.append(user[2]+" "+user[1]+" "+str(user[0]))
-            else:
-                titles.append(user[1]+" "+str(user[0]))
-
+    if mirrored:
+        colors = get_colors(len(data))
     else:
-        datas = datas[0:top_size]
-        data = []
-        titles = []
-        for entry in datas:
-            data.append(entry[0])
-            if len(entry) > 2:
-                titles.append(entry[1]+" "+entry[2])
-            else:
-                titles.append(entry[1])
+        colors = get_colors(len(data))
+        colors.reverse()
 
     return make_graph(graph_type, graph_id, titles, title, data, legend="submissions count",
                       options="scales: #1 xAxes: [#1display: true#2], yAxes: [#1display: false#2]#2".replace("#1","{").replace("#2","}"), color_lst=get_colors(len(data)))

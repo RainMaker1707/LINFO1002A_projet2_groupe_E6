@@ -1,5 +1,4 @@
 from random import randint
-from math import sqrt
 import sqlite3
 
 
@@ -29,24 +28,24 @@ def get_random_colors(number: int):
 
 
 def get_colors(number: int, *base_color: int):
-	"""
-	:param number: number of tuple > 0
-	:param base_color: int between 0 and 360
-	:return: a list o string "hsl(x, xx%, xx%)"
-	"""
-	step = 60/number
+    """
+    :param number: number of tuple > 0
+    :param base_color: int between 0 and 360
+    :return: a list o string "hsl(x, xx%, xx%)"
+    """
+    step = 60/number
 
-	if not base_color:
-		fist = randint(0,360)
+    if not base_color:
+        first = randint(0, 360)
+    else:
+        first = 0
 
-	lst = []
-	for i in range(number):
-		lst.append("hsl({0}, 90%, {1}%)".format(fist, 20+i*step))
+    lst = []
+    for i in range(number):
+        lst.append("hsl({0}, 90%, {1}%)".format(first, 20+i*step))
 
-	return lst[:number]
+    return lst[:number]
 
-
-			
 
 def date_format(date: str):
     """
@@ -66,9 +65,9 @@ def date_format(date: str):
 
 
 def leap_years(year: int):
-	"""
-	"""
-	return year//4 - year//100 + year//400
+    """
+    """
+    return year//4 - year//100 + year//400
 
 
 def date_dic_to_list(dic: dict, days: int, day_1: int):
@@ -79,8 +78,8 @@ def date_dic_to_list(dic: dict, days: int, day_1: int):
     :return: a list of all keys in the dic sorted with empty spaces for missing dates
     """
     if len(dic) == 1:
-    	for elem in dic:
-    		return [date_format(elem)]
+        for elem in dic:
+            return [date_format(elem)]
     lst = ["" for _ in range(days)]
     for elem in dic:
         lst[date_format(elem)-day_1-1] = elem
