@@ -190,7 +190,8 @@ def best_user_perf(filename: str, task: str):
         return ""
 
     lst = ["success", "failed", "error", "first try"]
-    return make_graph("doughnut", "subs_rep2", lst, "repartition of best performance by student", data, color_lst=get_colors(4))
+    return make_graph("doughnut", "subs_rep2", lst, "repartition of best performance by student", data,
+                      color_lst=get_colors(4))
 
 
 def graph_submissions_repartition(filename: str, task: str):

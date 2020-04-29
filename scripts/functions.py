@@ -27,7 +27,7 @@ def get_random_colors(number: int):
     return lst
 
 
-def get_colors(number: int, *base_color: int):
+def get_colors(number: int, base_color: int):
     """
     :param number: number of tuple > 0
     :param base_color: int between 0 and 360
@@ -36,13 +36,13 @@ def get_colors(number: int, *base_color: int):
     step = 60/number
 
     if not base_color:
-        first = randint(0, 360)
+        fist = randint(0, 360)
     else:
-        first = 0
+        fist = base_color
 
     lst = []
     for i in range(number):
-        lst.append("hsl({0}, 90%, {1}%)".format(first, 20+i*step))
+        lst.append("hsl({0}, 90%, {1}%)".format(fist, 20+i*step))
 
     return lst[:number]
 
