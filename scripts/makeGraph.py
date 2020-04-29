@@ -28,13 +28,18 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
             tmp = list()
             tmp.append(legend)
             legend = tmp
-        if len(data) != len(legend):
-            return "the number of datasets does not match between data and legend"
+        
 
     if not isinstance(data[0], list):
         tmp = list()
         tmp.append(data)
         data = tmp
+        if legend:
+            if len(data) != len(legend):
+                print(data)
+                print(legend)
+                return "the number of datasets does not match between data and legend"
+                
     if color_lst:
         if not isinstance(color_lst[0], list) and graph_type != "line":
             tmp = list()
