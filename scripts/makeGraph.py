@@ -28,7 +28,6 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
             tmp = list()
             tmp.append(legend)
             legend = tmp
-        
 
     if not isinstance(data[0], list):
         tmp = list()
@@ -36,8 +35,6 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
         data = tmp
         if legend:
             if len(data) != len(legend):
-                print(data)
-                print(legend)
                 return "the number of datasets does not match between data and legend"
                 
     if color_lst:
@@ -308,7 +305,7 @@ def graph_error_repartition(filename: str, task: str):
     data = list()
     for i in labels:
         data.append(request(filename, "SELECT COUNT(result) FROM submissions WHERE result=\"{0}\" "
-                                "AND task LIKE \"%{1}%\"".format(i, task[:4]))[0][0])
+                                      "AND task LIKE \"%{1}%\"".format(i, task[:4]))[0][0])
 
     return make_graph("radar", "error_repartition", labels, "repartition of all errors for the task", data,
                       options="legend: {display: false}")
