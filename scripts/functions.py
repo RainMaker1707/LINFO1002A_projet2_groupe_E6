@@ -27,7 +27,7 @@ def get_random_colors(number: int):
     return lst
 
 
-def get_colors(number: int, base_color: int):
+def get_colors(number: int, base_color: int = False):
     """
     :param number: number of tuple > 0
     :param base_color: int between 0 and 360
