@@ -310,3 +310,24 @@ def graph_error_repartition(filename: str, task: str):
 
     return make_graph("radar", "error_repartition", labels, "repartition of all errors for the task", data,
                       options="legend: {display: false}")
+
+
+def graph_week_repartition(filename: str, course: str):
+    subs = request(filename, "SELECT submitted_on FROM submissions WHERE course=\"{0}\"".format(course))
+    data = [0 for _ in range(7)]
+    tot = 0
+
+    for date in subs:
+        data[find_day(date[0][:10])] += 1
+        tot += 1
+
+    for i in range(len(data)):
+        data[i] = int((data[i]/tot) * 10000) / 100
+
+    return make_graph("bar", "week_repartition", ["Monday", "Tuseday", "Wednesday", "Thursday", "Friday", "Saturday",
+                                                   "Sunday"], "typical week activity repartition", data,
+                      color_lst=get_colors(7),
+                      options="scales: {yAxes: [{ticks: {suggestedMax: 100}}],legend: {display: false}}")
+
+def graph_day_repartition(filename: str, course: str):
+    pass

@@ -95,3 +95,38 @@ def leap(year):
     if year % 400 == 0:
         leap_flag = True
     return leap_flag
+
+
+def find_day(date):
+    """
+    :param date: a string of a date in the format yyyy/mm/dd
+    :return: an int between 0 and 6 coresponding to the day
+    """
+    year_code = (int(date[2:4]) + (int(date[2:4]) // 4)) %7
+
+    month_index = [None,0,3,3,6,1,4,6,2,5,0,3,5]
+    month_code = month_index[int(date[5:7])]
+
+    # julian calendar
+    if int(date[0:4]) < 1752:
+        century_code = (18 - int(date[1:2])) % 7
+        if date[0:4] % 4 == 0:
+            leap_code = 0
+        else:
+            leap_code = 1
+
+
+    # gregorian calendar
+    else:
+        century_index = {"17":4,"18":2,"19":0,"20":6,"21":4,"22":2,"23":0}
+        century_code = century_index[date[0:2]]
+        if leap(int(date[0:4])):
+            leap_code = 1
+        else:
+            leap_code = 1
+
+
+    day = ((year_code+month_code+century_code+leap_code+int(date[-2:])) % 7) - 1
+    if day < 0:
+        day = 6
+    return day

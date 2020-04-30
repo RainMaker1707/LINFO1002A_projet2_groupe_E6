@@ -51,7 +51,8 @@ def course_page(course: str):
                                                  "SELECT SUM(tried), task, username FROM user_tasks "
                                                  "WHERE course='{0}' GROUP BY username, task ".format(course),
                                                  "Podium of student with highest submissions numbers per task",
-                                                 "graph4", True))
+                                                 "graph4", True),
+                           GRAPH1=graph_week_repartition(db, course))
 
 
 @app.route('/course/<course>/<task>')
