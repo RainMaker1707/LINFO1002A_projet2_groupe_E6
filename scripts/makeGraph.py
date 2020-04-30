@@ -327,7 +327,20 @@ def graph_week_repartition(filename: str, course: str):
     return make_graph("bar", "week_repartition", ["Monday", "Tuseday", "Wednesday", "Thursday", "Friday", "Saturday",
                                                    "Sunday"], "typical week activity repartition", data,
                       color_lst=get_colors(7),
-                      options="scales: {yAxes: [{ticks: {suggestedMax: 100}}],legend: {display: false}}")
+                      options="scales: {yAxes: [{ticks: {suggestedMin: 0, suggestedMax: 50}}]},legend: {display: false}")
 
 def graph_day_repartition(filename: str, course: str):
-    pass
+    subs = request(filename, "SELECT submitted_on FROM submissions WHERE course=\"{0}\"".format(course))
+    data = [0 for _ in range(24)]
+    tot = 0
+
+    for date in subs:
+        data[int(date[0][11:13])-1] += 1
+        tot += 1
+
+    for i in range(len(data)):
+        data[i] = int((data[i] / tot) * 10000) / 100
+
+    return make_graph("bar", "day_repartition", [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+                      "typical day activity repartition", data, color_lst=get_colors(24),
+                      options="scales: {yAxes: [{ticks: {suggestedMin: 0, suggestedMax: 50}}]},legend: {display: false}")

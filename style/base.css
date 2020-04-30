@@ -104,34 +104,10 @@ header{
     background-color: #333;
 }
 
-.FirstLineGraph{
-    margin-top: 50px;
-    margin-left: 150px;
-    display: flex;
-    align-items: center;
-}
-
 p{
     color: --warning;
     font-weight: 400;
     font-size: 40px;
-}
-
-.secondLineGraph{
-    margin-right: 250px;
-    margin-left: 50px;
-    text-align: center;
-}
-
-.mainGraphCont{
-    height: auto;
-    width: 50%;
-    minimum-width: 20vw;
-    margin: 20px;
-    display: flex;
-    align-items: center;
-    padding: 1px;
-    margin-left: -100px;
 }
 
 *, *::before, *::after {
@@ -144,6 +120,45 @@ p{
 a{
     text-decoration: none;
     color: #fff;
+}
+
+.Graph{
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#g_left1{
+    grid-area: G1;
+}
+
+#g_right2{
+    grid-area: G2;
+}
+
+#g_center3{
+    grid-area: G3;
+}
+
+#g_center4{
+    grid-area: G4;
+}
+
+#g_center5{
+    grid-area: G5;
+}
+
+#graph_grid{
+    padding-right: 215px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 15% 1fr 1fr 1fr;
+    grid-template-areas: 'G1 G2'
+                         'G3 G3'
+                         'G4 G4'
+                         'G5 G5';
+    gap: 10px;
+    display: grid;
+    margin: 10px;
 }
 
 :root{
