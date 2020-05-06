@@ -59,8 +59,6 @@ def course_page(course: str):
 @app.route('/course/<course>/<task>')
 def task_page(course: str, task: str):
     db = "scripts/DataBase/inginious.sqlite"
-    print(course)
-    print(task)
     if course not in course_list(db):
         return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
                                PATH="\t<a href=\"/\">  Statistics  </a>| COURSE NOT FOUND",
@@ -79,4 +77,4 @@ def task_page(course: str, task: str):
                            GRAPH1=student_perform_graph(db, task),
                            GRAPH2=best_user_perf(db, task),
                            GRAPH3=graph_submissions_repartition(db, task),
-                           GRAPH4=graph_error_repartition(db,task))
+                           GRAPH4=graph_error_repartition(db, task))
