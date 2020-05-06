@@ -148,7 +148,7 @@ a{
 #graph_grid{
     padding-right: 215px;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 30% 1fr 1fr 1fr;
+    grid-template-rows: 20% 1fr 1fr 1fr;
     grid-template-areas: 'G1 G2'
                          'G3 G3'
                          'G4 G4';
