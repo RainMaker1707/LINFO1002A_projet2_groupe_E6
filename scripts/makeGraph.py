@@ -106,11 +106,11 @@ def double_bar_graph(filename: str, req_fail: str, req_success: str):
     chart += "labels: {0},\n\t".format(x_axe)
     chart += "datasets: [{\n\t\t"
     chart += "label: 'attempt',\n\t\t"
-    chart += "backgroundColor: \"rgba(255,0,0,0.8)\",\n\t\t"
+    chart += "backgroundColor: \"rgba(230,0,0,0.8)\",\n\t\t"
     chart += "data: {0},\n\t\t".format(y_axe)
     chart += "},{\n\t\t"
     chart += "label: 'success',\n\t\t"
-    chart += "backgroundColor: \"rgba(0,255,0,0.8)\",\n\t\t"
+    chart += "backgroundColor: \"rgba(0,200,0,0.8)\",\n\t\t"
     chart += "data: {0},\n\t\t".format(y_axe_2)
     chart += "}]};\n"
     chart += "var myBarChart = new Chart(ctx, {\n\ttype: 'bar',\n\tdata: data,\n\toptions: {\n\t\t"
@@ -158,7 +158,7 @@ def student_perform_graph(filename: str, task: str):
 
     lst = ["success", "failed", "errors"]
     return make_graph("pie", "subs_rep", lst, "repartition of all submissions result", data,
-                      color_lst=['rgba(0, 255, 0, 0.85)', 'rgba(255, 0, 0, 0.85)', 'rgba(255, 115, 0, 0.85)'])
+                      color_lst=['rgba(0, 200, 0, 0.85)', 'rgba(230, 0, 0, 0.85)', 'rgba(255, 115, 0, 0.85)'])
 
 
 def best_user_perf(filename: str, task: str):
