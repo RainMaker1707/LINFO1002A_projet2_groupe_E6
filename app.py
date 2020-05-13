@@ -8,7 +8,7 @@ app = Flask(__name__, template_folder='templates', static_folder='style')
 @app.route('/')
 def home():
     """
-    :return:
+    :return: the html home page
     """
     db = "scripts/DataBase/inginious.sqlite"
     return render_template("base.html",
@@ -32,6 +32,10 @@ def home():
 
 @app.route('/course/<course>')
 def course_page(course: str):
+    """
+    :param course: string name of the current course
+    :return: the html course page filled with goods graphs
+    """
     db = "scripts/DataBase/inginious.sqlite"
     course_lst = course_list(db)
     if course not in course_lst:
@@ -58,6 +62,11 @@ def course_page(course: str):
 
 @app.route('/course/<course>/<task>')
 def task_page(course: str, task: str):
+    """
+    :param course:  string name of the current course
+    :param task:  string name of the current task
+    :return: the html task page filled with goods graphs
+    """
     db = "scripts/DataBase/inginious.sqlite"
     if course not in course_list(db):
         return render_template("base.html", STYLE=url_for('static', filename="base.css"), MENU=make_menu(db),
