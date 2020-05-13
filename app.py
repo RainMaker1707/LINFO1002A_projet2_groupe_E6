@@ -52,8 +52,8 @@ def course_page(course: str):
                                                  "WHERE course='{0}' GROUP BY username, task ".format(course),
                                                  "Podium of student with highest submissions numbers per task",
                                                  "graph4", True),
-                           GRAPH1=graph_week_repartition(db, course),
-                           GRAPH2=graph_day_repartition(db, course))
+                           GRAPH1=graph_week_distribution(db, course),
+                           GRAPH2=graph_day_distribution(db, course))
 
 
 @app.route('/course/<course>/<task>')
@@ -76,5 +76,5 @@ def task_page(course: str, task: str):
                                course, task),
                            GRAPH1=student_perform_graph(db, task),
                            GRAPH2=best_user_perf(db, task),
-                           GRAPH3=graph_submissions_repartition(db, task),
-                           GRAPH4=graph_error_repartition(db, task))
+                           GRAPH3=graph_submissions_distribution(db, task),
+                           GRAPH4=graph_error_distribution(db, task))

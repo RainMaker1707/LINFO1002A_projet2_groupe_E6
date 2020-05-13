@@ -157,7 +157,7 @@ def student_perform_graph(filename: str, task: str):
         return ""
 
     lst = ["success", "failed", "errors"]
-    return make_graph("pie", "subs_rep", lst, "repartition of all submissions result", data,
+    return make_graph("pie", "subs_rep", lst, "Distribution of all submissions result", data,
                       color_lst=['rgba(0, 200, 0, 0.85)', 'rgba(230, 0, 0, 0.85)', 'rgba(255, 115, 0, 0.85)'])
 
 
@@ -190,11 +190,11 @@ def best_user_perf(filename: str, task: str):
         return ""
 
     lst = ["success", "failed", "error", "first try"]
-    return make_graph("doughnut", "subs_rep2", lst, "repartition of best performance by student", data,
+    return make_graph("doughnut", "subs_rep2", lst, "Distribution of best performance by student", data,
                       color_lst=get_colors(4))
 
 
-def graph_submissions_repartition(filename: str, task: str):
+def graph_submissions_distribution(filename: str, task: str):
     """
     :param filename:
     :param task:
@@ -294,7 +294,7 @@ def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, titl
                               "false#2]#2".replace("#1", "{").replace("#2", "}"), color_lst=colors)
 
 
-def graph_error_repartition(filename: str, task: str):
+def graph_error_distribution(filename: str, task: str):
     total = request(filename, "SELECT COUNT(result) FROM submissions WHERE task=\"{0}\"".format(task))[0][0]
     if total == 0:
         return ""
@@ -308,11 +308,11 @@ def graph_error_repartition(filename: str, task: str):
         data.append(request(filename, "SELECT COUNT(result) FROM submissions WHERE result=\"{0}\" "
                                       "AND task LIKE \"%{1}%\"".format(i, task[:4]))[0][0])
 
-    return make_graph("radar", "error_repartition", labels, "repartition of all errors for the task", data,
+    return make_graph("radar", "error_distribution", labels, "Distribution of all errors for the task", data,
                       options="legend: {display: false}")
 
 
-def graph_week_repartition(filename: str, course: str):
+def graph_week_distribution(filename: str, course: str):
     subs = request(filename, "SELECT submitted_on FROM submissions WHERE course=\"{0}\"".format(course))
     data = [0.0 for _ in range(7)]
     tot = 0
@@ -324,14 +324,14 @@ def graph_week_repartition(filename: str, course: str):
     for i in range(len(data)):
         data[i] = int((data[i]/tot) * 10000) / 100
 
-    return make_graph("bar", "week_repartition", ["Monday", "Tuseday", "Wednesday", "Thursday", "Friday", "Saturday",
-                      "Sunday"], "typical week activity repartition", data,
+    return make_graph("bar", "week_distribution", ["Monday", "Tuseday", "Wednesday", "Thursday", "Friday", "Saturday",
+                      "Sunday"], "typical week activity distribution", data,
                       color_lst=get_colors(7),
                       options="scales: {yAxes: [{ticks: {suggestedMin: 0, suggestedMax: 50}}]},"
                               "legend: {display: false}")
 
 
-def graph_day_repartition(filename: str, course: str):
+def graph_day_distribution(filename: str, course: str):
     subs = request(filename, "SELECT submitted_on FROM submissions WHERE course=\"{0}\"".format(course))
     data = [0.0 for _ in range(24)]
     tot = 0
@@ -343,7 +343,7 @@ def graph_day_repartition(filename: str, course: str):
     for i in range(len(data)):
         data[i] = int((data[i] / tot) * 10000) / 100
 
-    return make_graph("bar", "day_repartition", [i for i in range(1, 25)],
-                      "typical day activity repartition", data, color_lst=get_colors(24),
+    return make_graph("bar", "day_distribution", [i for i in range(1, 25)],
+                      "typical day activity distribution", data, color_lst=get_colors(24),
                       options="scales: {yAxes: [{ticks: {suggestedMin: 0, suggestedMax: "
                               "50}}]},legend: {display: false}")
