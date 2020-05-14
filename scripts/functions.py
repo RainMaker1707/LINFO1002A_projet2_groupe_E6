@@ -66,6 +66,8 @@ def date_format(date: str):
 
 def leap_years(year: int):
     """
+    :param year:  int corresponding to a year above 0
+    :return: the number of leap year(s) since year 0
     """
     return year//4 - year//100 + year//400
 
@@ -87,6 +89,10 @@ def date_dic_to_list(dic: dict, days: int, day_1: int):
 
 
 def leap(year):
+    """
+    :param year: int corresponding to a year above 0
+    :return: bool if the year is a leap year
+    """
     leap_flag = False
     if year % 4 == 0:
         leap_flag = True

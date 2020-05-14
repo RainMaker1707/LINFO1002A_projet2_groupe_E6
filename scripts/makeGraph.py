@@ -2,7 +2,7 @@ from scripts.functions import *
 
 
 def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
-               options=None, color_lst=None, legend=None, hide_datasets=None):
+               options=None, color_lst=None, legend=None, hide_dataset=None):
     """
     Function which return a canvas with the chart.js script set with the following data
     :param graph_type: type of the graph ( bar, line, doughnut, pie, etc)
@@ -295,6 +295,11 @@ def top_subs_count(filename: str, top_size: int, graph_type: str, req: str, titl
 
 
 def graph_error_distribution(filename: str, task: str):
+    """
+    :param filename:
+    :param task:
+    :return:
+    """
     total = request(filename, "SELECT COUNT(result) FROM submissions WHERE task=\"{0}\"".format(task))[0][0]
     if total == 0:
         return ""
@@ -313,6 +318,11 @@ def graph_error_distribution(filename: str, task: str):
 
 
 def graph_week_distribution(filename: str, course: str):
+    """
+    :param filename:
+    :param course:
+    :return:
+    """
     subs = request(filename, "SELECT submitted_on FROM submissions WHERE course=\"{0}\"".format(course))
     data = [0.0 for _ in range(7)]
     tot = 0
@@ -332,6 +342,11 @@ def graph_week_distribution(filename: str, course: str):
 
 
 def graph_day_distribution(filename: str, course: str):
+    """
+    :param filename:
+    :param course:
+    :return:
+    """
     subs = request(filename, "SELECT submitted_on FROM submissions WHERE course=\"{0}\"".format(course))
     data = [0.0 for _ in range(24)]
     tot = 0
