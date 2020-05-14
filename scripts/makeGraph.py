@@ -9,13 +9,13 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
     :param graph_id: canvas id to link the css part of base.css to the graph container
     :param labels: list of the labels on the X axes for the typical graph or name of part in doughnut/pie graph
     :param title: string, title of the graph
-    :param data: list of y value or part of pie/doughnut, list of list if multiple datasets
-    :param color_lst: list of color you want in the graph, list of list if multiple datasets
+    :param data: list of y value or part of pie/doughnut, list of list if multiple dataset
+    :param color_lst: list of color you want in the graph, list of list if multiple dataset
            pattern : ["rgba(r: int, g: int, b: int, a: float(0,1)",...,"rgba(r: int, g: int, b: int, a: float(0,1)"]
            if not given colors are chosen randomly
-    :param legend: string or list on datsets label
+    :param legend: string or list on dataset label
     :param options: options you want to set in
-    :param hide_datasets: list of dataset index to hide on load
+    :param hide_dataset: list of dataset index to hide on load
     :return: the string part of the html code to plain the template
     """
     canvas = "<canvas id=\"{0}\">\n<script>\nvar ctx = document.getElementById('{0}')".format(graph_id)
@@ -35,7 +35,7 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
         data = tmp
         if legend:
             if len(data) != len(legend):
-                return "the number of datasets does not match between data and legend"
+                return "the number of dataset does not match between data and legend"
                 
     if color_lst:
         if not isinstance(color_lst[0], list) and graph_type != "line":
@@ -43,14 +43,14 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
             tmp.append(color_lst)
             color_lst = tmp
 
-    # add datasets
+    # add dataset
     for i in range(len(data)):
         # label
         if legend:
             canvas += "\n\tlabel: '{0}',\n".format(legend[i])
         # hide
-        if hide_datasets:
-            if i in hide_datasets:
+        if hide_dataset:
+            if i in hide_dataset:
                 canvas += "\thidden: true,\n"
 
         # colors
@@ -75,11 +75,11 @@ def make_graph(graph_type: str, graph_id: str, labels: list, title, data: list,
     canvas += "#2]\n#2,\n"
 
     if options:
-        canvas += "options: #1\ntitle: #1\ndisplay: true,\n text: '{0}'\n#2,\nlegend: #1 position: 'bottom'#2," \
-                  " {1}\n#2\n".format(title, options)
+        canvas += "options: #1\ntitle: #1\ndisplay: true,\nfontSize: 20,\n text: '{0}'\n#2,\nlegend: #1 position: " \
+                  "'bottom'#2, {1}\n#2\n".format(title, options)
     else:
-        canvas += "options: #1\ntitle: #1\ndisplay: true,\n text: '{0}'\n#2,\nlegend: #1 position: 'bottom'" \
-                  "#2#2\n".format(title)
+        canvas += "options: #1\ntitle: #1\ndisplay: true,\nfontSize: 20,\ntext: '{0}'\n#2,\nlegend: " \
+                  "#1 position: 'bottom'#2#2\n".format(title)
     canvas += "#2);\n</script>\n</canvas>"
     canvas = canvas.replace('#1', '{')
     canvas = canvas.replace('#2', '}')
@@ -198,7 +198,7 @@ def graph_submissions_distribution(filename: str, task: str):
     """
     :param filename:
     :param task:
-    :retun:
+    :return:
     """
     dates = dict()
     days_lst = list()
@@ -214,13 +214,13 @@ def graph_submissions_distribution(filename: str, task: str):
 
     dates_lst = date_dic_to_list(dates, days_lst[-1][0]-days_lst[0][0], days_lst[0][0])
     values = [0 for _ in range(len(dates_lst))]
-    values_succes = [0 for _ in range(len(dates_lst))]
+    values_success = [0 for _ in range(len(dates_lst))]
     values_error = [0 for _ in range(len(dates_lst))]
 
     for date in days_lst:
         values[date[0]-days_lst[0][0]-1] += 1
         if date[1] == "success":
-            values_succes[date[0]-days_lst[0][0]-1] += 1
+            values_success[date[0] - days_lst[0][0] - 1] += 1
         elif date[1] != "failed":
             values_error[date[0]-days_lst[0][0]-1] += 1
 
@@ -230,8 +230,8 @@ def graph_submissions_distribution(filename: str, task: str):
         colors.append("\""+i+"\"")
 
     return make_graph("line", "subs_rep3", dates_lst, "Evolution of submissions over the task duration",
-                      [values, values_succes, values_error], legend=["submissions", "success", "errors"],
-                      color_lst=colors, hide_datasets=[2])
+                      [values, values_success, values_error], legend=["submissions", "success", "errors"],
+                      color_lst=colors, hide_dataset=[2])
 
 
 def inter_fun_y_axe(top_list):

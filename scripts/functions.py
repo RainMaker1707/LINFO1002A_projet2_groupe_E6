@@ -50,7 +50,7 @@ def get_colors(number: int, base_color: int = False):
 def date_format(date: str):
     """
     :param date: string 'yyyy-mm-dd'...
-    :return: int number of days sice year 0
+    :return: int number of days since year 0
     """
     days = 0
     leap_months = [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335]
@@ -100,7 +100,7 @@ def leap(year):
 def find_day(date):
     """
     :param date: a string of a date in the format yyyy/mm/dd
-    :return: an int between 0 and 6 coresponding to the day
+    :return: an int between 0 and 6 corresponding to the day
     """
     year_code = (int(date[2:4]) + (int(date[2:4]) // 4)) % 7
 
